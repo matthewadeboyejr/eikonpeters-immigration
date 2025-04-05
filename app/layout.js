@@ -15,7 +15,7 @@ const inter = Inter({
 }; */
 
 export const metadata = {
-  title: "Horizon Immigration | Visa & Relocation Experts",
+  title: "Eikon Immigration | Visa & Relocation Experts",
   description:
     "Trusted immigration consultants for Canada, UK, USA, and Australia visas. Get professional help with work, study, and family immigration.",
   keywords: [

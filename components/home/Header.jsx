@@ -9,13 +9,13 @@ const Header = () => {
         className="text-white space-y-6 max-w-4xl"
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
+        transition={{ duration: 0.2, ease: "easeOut" }}
       >
         <motion.h1
           className="text-5xl sm:text-6xl md:text-6xl lg:text-7xl font-semibold leading-tight"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
+          transition={{ duration: 0.2, delay: 0.1 }}
         >
           Best Visa <span className="text-yellow-500 font-extrabold">&</span>{" "}
           Immigration Services
@@ -25,7 +25,7 @@ const Header = () => {
           className="text-base sm:text-lg md:text-xl font-medium"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
+          transition={{ duration: 0.2, delay: 0.2 }}
         >
           Get the best solution for all types of Visa & Immigration
         </motion.p>
@@ -34,7 +34,7 @@ const Header = () => {
           className="flex flex-wrap gap-4"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
+          transition={{ duration: 0.2, delay: 0.2 }}
         >
           <motion.button
             className="primary-btn"
