@@ -1,5 +1,151 @@
 @import "tailwindcss";
 
+.header-overlay {
+  width: 100%;
+  height: 100vh;
+  min-height: 70vh;
+  background: linear-gradient(
+      90deg,
+      rgb(0, 95, 46) 0%,
+      rgba(246, 197, 77, 0.49205619747899154) 100%
+    ),
+    url("https://images.pexels.com/photos/1201995/pexels-photo-1201995.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2")
+      no-repeat;
+
+  background-position: right top;
+  background-size: cover;
+
+  clip-path: ellipse(100% 100% at 50% 100%);
+}
+.review-overlay {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+      90deg,
+      rgba(1, 78, 186, 0.836) 100%,
+      rgba(246, 197, 77, 0.49205619747899154) 100%
+    ),
+    url("https://images.pexels.com/photos/4880419/pexels-photo-4880419.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2")
+      no-repeat;
+
+  background-position: right top;
+  background-size: cover;
+  clip-path: ellipse(100% 100% at 50% 100%);
+}
+.contact-overlay {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+      90deg,
+      rgba(228, 228, 228, 0.931) 100%,
+      rgba(246, 197, 77, 0.49205619747899154) 100%
+    ),
+    url("https://img.freepik.com/free-vector/outline-landmarks-skyline-with-bridge_23-2148425879.jpg?t=st=1743873576~exp=1743877176~hmac=55e1d19ce7ec3d32ca40e321a3d90f04fe7213a069fdd301a71a8a5c2d1359c2&w=2000")
+      no-repeat;
+
+  background-position: center center;
+  background-size: cover;
+}
+.contactus-overlay {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+      90deg,
+      rgba(228, 228, 228, 0.931) 100%,
+      rgba(246, 197, 77, 0.49205619747899154) 100%
+    ),
+    url("https://img.freepik.com/free-vector/outline-landmarks-skyline-with-bridge_23-2148425879.jpg?t=st=1743873576~exp=1743877176~hmac=55e1d19ce7ec3d32ca40e321a3d90f04fe7213a069fdd301a71a8a5c2d1359c2&w=2000")
+      no-repeat;
+
+  background-position: center center;
+  background-size: cover;
+  clip-path: ellipse(100% 100% at 50% 100%);
+}
+.reason-overlay {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+      90deg,
+      rgba(253, 253, 231, 0.931) 100%,
+      rgba(246, 197, 77, 0.492) 100%
+    ),
+    url("https://img.freepik.com/free-vector/london-concept-illustration_114360-8298.jpg?t=st=1743874054~exp=1743877654~hmac=98b454c867f225489c738ae7b9949118ed6e52a359b6902bccc0b0a62a8ebfec&w=2000")
+      no-repeat;
+
+  background-position: center center;
+  background-size: cover;
+}
+.about-overlay {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+      90deg,
+      rgba(253, 253, 231, 0.931) 100%,
+      rgba(246, 197, 77, 0.492) 100%
+    ),
+    url("https://images.pexels.com/photos/842961/pexels-photo-842961.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2")
+      no-repeat;
+
+  background-position: center center;
+  background-size: cover;
+}
+
+.h2 {
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: normal;
+}
+
+.primary-btn,
+.secondary-btn {
+  padding: 0.75rem 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 9999px; /* Tailwind's fully rounded */
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease-in-out;
+  z-index: 1;
+}
+
+.primary-btn {
+  background-color: #f0b100;
+  color: #ffffff;
+  border: none;
+}
+
+.secondary-btn {
+  background-color: #ffffff;
+  color: #f0b100;
+  border: 1px solid #f0b100;
+}
+
+/* Shared hover effect */
+.primary-btn::before,
+.secondary-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 200%;
+  height: 100%;
+  background: linear-gradient(120deg, #ffffff30, #ffffff10, #ffffff30);
+  transform: skewX(-20deg);
+  transition: all 0.6s ease-in-out;
+  z-index: 0;
+}
+
+.primary-btn:hover::before,
+.secondary-btn:hover::before {
+  left: 100%;
+}
+
+.primary-btn:hover,
+.secondary-btn:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -22,5 +168,5 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-inter);
 }
