@@ -94,7 +94,7 @@ const Nav = () => {
               className="flex items-center hover:text-blue-100 transition-colors"
             >
               <FaPhone className="mr-2" />
-              <span>+1 (123) 456-7890</span>
+              <span>+447557882523</span>
             </a>
             <a
               href="mailto:info@immigro.com"
@@ -198,7 +198,7 @@ const Nav = () => {
             {/* Header Actions */}
             <div className="flex items-center space-x-4">
               <a
-                href="/consultation"
+                href="https://forms.gle/SdekGucyTiim16Yh6"
                 className="hidden md:inline-flex items-center primary-btn"
               >
                 <FaCalendarAlt className="mr-2" />

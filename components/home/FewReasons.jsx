@@ -79,8 +79,15 @@ const FewReasons = () => {
         viewport={{ once: true }}
         className="bg-green-900 md:rounded-full mx-5 rounded-2xl px-6 py-2 mt-12 md:mx-auto max-w-5xl flex flex-col sm:flex-row items-center justify-between gap-4 shadow-md"
       >
-        <p className="text-white text-center text-sm sm:text-base font-medium">
-          Top rated by customers & immigration firms with 100% success rate.
+        <p className="text-white text-center text-sm sm:text-base font-medium flex items-center gap-3">
+          <span>
+            <img
+              className="max-w-7 h-7 rounded-full"
+              src="../images/iaa.png"
+              alt="iaa logo"
+            />
+          </span>
+          <span>Top rated by customers & IAA Registered</span>
         </p>
 
         <button className="secondary-btn">Discover More</button>

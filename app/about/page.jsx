@@ -52,11 +52,11 @@ const About = () => {
             </p>
 
             <p className="font-normal  text-white">
-              We are dedicated to making your immigration journey as smooth and
-              stress-free as possible. With years of experience and a team of
-              highly knowledgeable professionals, we have helped thousands of
-              individuals, families, and businesses navigate the complexities of
-              immigration law and find success in their endeavors.
+              We are committed to making your immigration journey seamless and
+              stress-free. Backed by years of experience and a team of seasoned
+              professionals, we have successfully guided hundreds of
+              individuals, families, and businesses through the complexities of
+              immigration law—helping them achieve their goals with confidence.
             </p>
           </motion.div>
 

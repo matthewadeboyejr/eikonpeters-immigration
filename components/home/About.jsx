@@ -45,11 +45,11 @@ const About = () => {
           </p>
 
           <p className="font-normal opacity-70">
-            We are dedicated to making your immigration journey as smooth and
-            stress-free as possible. With years of experience and a team of
-            highly knowledgeable professionals, we have helped thousands of
-            individuals, families, and businesses navigate the complexities of
-            immigration law and find success in their endeavors.
+            We are committed to making your immigration journey seamless and
+            stress-free. Backed by years of experience and a team of seasoned
+            professionals, we have successfully guided hundreds of individuals,
+            families, and businesses through the complexities of immigration
+            law—helping them achieve their goals with confidence.
           </p>
 
           <div className="flex items-center justify-between flex-wrap gap-4">
@@ -105,7 +105,7 @@ const About = () => {
                 className="w-full h-full object-cover"
               />
               <div className="absolute bottom-2 right-2 bg-blue-900 text-white px-3 py-1 rounded-md flex items-center gap-1 shadow-md">
-                <span className="font-bold text-lg">3800</span>
+                <span className="font-bold text-lg"></span>
                 <span className="text-sm">Satisfied Clients</span>
               </div>
             </motion.div>
