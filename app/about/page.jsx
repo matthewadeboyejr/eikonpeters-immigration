@@ -1,8 +1,6 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
-import { RiGlobalLine } from "react-icons/ri";
-import Nav from "@/components/home/Nav";
 import Breadcrumb from "@/components/basic-setup/Breadcrumb";
 import MissionVision from "@/components/about/MissionVision";
 import FewReasons from "@/components/home/FewReasons";
@@ -24,7 +22,7 @@ const staggerContainer = {
 
 const About = () => {
   return (
-    <div cla>
+    <div>
       <section className="review-overlay py-20 px-10 md:px-40 bg-blue-50">
         <Breadcrumb prevPage={"Home"} currentPage={"About"} />
         <motion.div

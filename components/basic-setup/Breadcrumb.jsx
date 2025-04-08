@@ -10,7 +10,7 @@ const Breadcrumb = ({ prevPage, currentPage }) => {
     router.back();
   };
   return (
-    <div className="w-full mb-5 ">
+    <div className="w-full mb-10 ml-5 ">
       <nav className="flex" aria-label="Breadcrumb">
         <ol className="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
           <li>
