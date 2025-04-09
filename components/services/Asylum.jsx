@@ -59,7 +59,7 @@ const Asylum = () => {
               <p>Guidance on how to prepare for your initial consultation</p>
             </li>
           </ul>
-          <p className="text-white border-y py-4">
+          <p className="text-black border-y py-4">
             At
             <span className="font-bold">
               Eikon Peters Immigration Services Ltd
