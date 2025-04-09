@@ -36,7 +36,7 @@ const page = () => {
               </p>
               <h2 className="h2 text-4xl font-bold leading-snug text-white">
                 🌍 UK Global <br />
-                Global
+                Global{" "}
                 <span className="text-yellow-500 font-extrabold">
                   Talent Visa
                 </span>
@@ -44,44 +44,67 @@ const page = () => {
               <div className="w-16 h-1 bg-yellow-500"></div>
             </div>
 
-            <p className="text-yellow-500 text-2xl">
+            {/* <p className="text-yellow-500 text-2xl">
               Unlock Global Opportunities with the UK Global Talent Visa
+            </p> */}
+            <p className="text-yellow-500 text-2xl font-bold">
+              In Partnership with Leading Immigration Experts
             </p>
 
-            <p className="font-normal  text-white">
-              Stand out as a leader in your field and take your career to the
-              next level with the UK Global Talent Visa. This exclusive
-              immigration route is designed for highly skilled individuals in
-              fields like tech, science, engineering, humanities, arts, and
-              culture—offering the flexibility to live and work in the UK
-              without needing a job offer. At our agency, we specialize in
-              guiding professionals and creatives through the endorsement and
-              application process. From evaluating your eligibility to preparing
-              a strong portfolio and submitting your application, we&apos;re
-              with you every step of the way.
+            <p className="font-normal  text-white ">
+              The UK Global Talent Visa is designed for exceptional individuals
+              in the fields of science, engineering, technology, arts, and
+              culture. This flexible visa allows you to live and work in the UK
+              without needing a job offer — provided you receive an endorsement
+              from a recognised body.
+            </p>
+
+            <p className="text-white border-y py-4">
+              <span className="font-bold">
+                Please note: As a registered IAA Level 1 Organisation
+              </span>
+              , we do not provide immigration advice or assistance on the Global
+              Talent Visa directly. However, we work in partnership with
+              qualified immigration professionals who are authorised to assist
+              at Level 2 or 3.
             </p>
             <ul className="text-white">
               <p className="font-medium ">What we offer</p>
               <li className="flex items-start space-x-4">
                 <IoCheckbox className="flex-shrink-0 text-yellow-600 mt-1" />
-                <p>Expert guidance on endorsement requirements</p>
+                <p>Initial consultation and eligibility screening</p>
               </li>
               <li className="flex items-start space-x-4">
                 <IoCheckbox className="flex-shrink-0 text-yellow-600 mt-1" />
-                <p>Personalized document and portfolio review</p>
+                <p>
+                  General information on the visa pathway and endorsement
+                  process
+                </p>
               </li>
               <li className="flex items-start space-x-4">
                 <IoCheckbox className="flex-shrink-0 text-yellow-600 mt-1" />
-                <p>Stress-free application management</p>
+                <p>
+                  Direct referral to our partner immigration firm regulated at
+                  Level 2/3 or by the Solicitors Regulation Authority
+                  <code>(SRA)</code>
+                </p>
               </li>
               <li className="flex items-start space-x-4">
                 <IoCheckbox className="flex-shrink-0 text-yellow-600 mt-1" />
-                <p>ngoing support even after your visa approval</p>
+                <p>Support in gathering documentation needed before referral</p>
+              </li>
+              <li className="flex items-start space-x-4">
+                <IoCheckbox className="flex-shrink-0 text-yellow-600 mt-1" />
+                <p>
+                  Ongoing communication and coordination to ensure a smooth
+                  process
+                </p>
               </li>
             </ul>
             <p className="text-white">
-              Start your journey to the UK as a recognized global talent—your
-              expertise deserves a global stage.
+              Let&apos;s help you take the next step in your global journey.
+              We&apos;ll connect you to the right experts while providing you
+              with the information and support you need from the start.
             </p>
 
             <a
@@ -131,44 +154,74 @@ const page = () => {
               <div className="w-16 h-1 bg-yellow-500"></div>
             </div>
 
-            <p className="text-yellow-500 text-2xl">
+            {/* <p className="text-yellow-500 text-2xl">
               Be Your Own Sponsor. Build Your Future in the UK.
+            </p> */}
+
+            <p className="text-yellow-500 text-2xl font-bold">
+              In Partnership with Leading Immigration Experts
             </p>
 
             <p className="font-normal text-black">
-              The UK Self-Sponsorship route offers ambitious entrepreneurs and
-              professionals the chance to live and work in the UK—without
-              needing a traditional job offer. If you have a business idea or an
-              existing business you want to expand to the UK, this visa option
-              allows you to take control of your immigration journey. We help
-              individuals set up a UK company, obtain a sponsor license, and
-              sponsor themselves to work and grow their own business in the UK.
-              Whether you're starting from scratch or scaling an existing brand,
-              our team ensures a smooth, step-by-step process.
+              The UK&apos;s Self-Sponsorship pathway offers a unique opportunity
+              for entrepreneurs and professionals to take control of their
+              journey to the UK through the development of a business. If you
+              have a viable business idea or want to expand your existing
+              business to the UK, this route may be suitable for you.
+            </p>
+            <p className="text-black border-y py-4">
+              <span className="font-bold">
+                Please note: As a registered IAA Level 1 Organisation
+              </span>
+              , we do not provide immigration advice or assistance on the Global
+              Talent Visa directly. However, we work in partnership with
+              qualified immigration professionals who are authorised to assist
+              at Level 2 or 3.
             </p>
             <ul className="text-black">
               <p className="font-medium ">What we offer</p>
               <li className="flex items-start space-x-4">
                 <IoCheckbox className="flex-shrink-0 text-yellow-600 mt-1" />
-                <p>Full support setting up your UK company</p>
+                <p>Support with setting up your UK company</p>
               </li>
               <li className="flex items-start space-x-4">
                 <IoCheckbox className="flex-shrink-0 text-yellow-600 mt-1" />
-                <p>Guidance through the sponsor license process</p>
+                <p>
+                  Initial information about the sponsor licence process and
+                  requirements{" "}
+                </p>
               </li>
               <li className="flex items-start space-x-4">
                 <IoCheckbox className="flex-shrink-0 text-yellow-600 mt-1" />
-                <p>Business plan and compliance preparation</p>
+                <p>
+                  Referral to trusted immigration professionals regulated at
+                  OISC Level 2/3 or by the Solicitors Regulation Authority{" "}
+                  <code>(SRA)</code>
+                </p>
               </li>
               <li className="flex items-start space-x-4">
                 <IoCheckbox className="flex-shrink-0 text-yellow-600 mt-1" />
-                <p>End-to-end visa support and ongoing business advice</p>
+                <p>Business planning assistance and operational guidance</p>
+              </li>
+              <li className="flex items-start space-x-4">
+                <IoCheckbox className="flex-shrink-0 text-yellow-600 mt-1" />
+                <p>
+                  Assistance with gathering documentation and business plans for
+                  onward referral
+                </p>
+              </li>
+              <li className="flex items-start space-x-4">
+                <IoCheckbox className="flex-shrink-0 text-yellow-600 mt-1" />
+                <p>
+                  Ongoing non-legal support throughout your business journey
+                </p>
               </li>
             </ul>
             <p className="text-black">
-              Take charge of your destiny. Build your business. Live in the
-              UK.Let&apos;s help you turn your vision into a reality—on your own
-              terms.
+              Take charge of your future, build a business you believe in, and
+              explore life in the UK — with the right professionals supporting
+              every step. Let&apos;s help you lay the foundation for your UK
+              success story.
             </p>
 
             <a
