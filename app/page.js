@@ -1,9 +1,11 @@
 import About from "@/components/home/About";
 import ConsultationSection from "@/components/home/ConsultationSection";
+import ContactUs from "@/components/home/ContactUs";
 import Faq from "@/components/home/Faq";
 import FewReasons from "@/components/home/FewReasons";
 import Footer from "@/components/home/Footer";
 import Header from "@/components/home/Header";
+import HowItWorks from "@/components/home/HowItWorks";
 import Nav from "@/components/home/Nav";
 import HeaderTwo from "@/components/home/Nav";
 import ServicesSection from "@/components/home/ServiceSection";
@@ -17,10 +19,11 @@ export default function Home() {
       <Header />
       <About />
       <FewReasons />
-      <TrainingSection />
+      <HowItWorks />
       <ServicesSection />
       <Testimonials />
-      <ConsultationSection />
+      <ContactUs />
+
       <Faq />
     </main>
   );

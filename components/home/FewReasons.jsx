@@ -2,6 +2,7 @@
 
 import { FaUserTie, FaGlobe, FaShieldAlt, FaHeadset } from "react-icons/fa";
 import { motion } from "motion/react";
+import { Button } from "../basic-setup/Button";
 
 const features = [
   {
@@ -55,15 +56,15 @@ const FewReasons = () => {
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
         >
-          <p className="text-sm sm:text-base text-gray-600">
+          {/*   <p className="text-sm sm:text-base text-gray-600">
             COUNTRIES YOU CAN VISIT
-          </p>
+          </p> */}
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold leading-snug">
-            Few reasons to choose <br />
-            our visa{" "}
-            <span className="text-yellow-500 font-extrabold">company</span>
+            A Few Reasons to Choose <br />
+            our Visa{" "}
+            <span className="text-yellow-500 font-extrabold">Company</span>
           </h2>
-          <div className="w-12 h-1 bg-red-500 mt-2"></div>
+          <div className="w-12 h-1 bg-yellow-500 mt-2"></div>
         </motion.div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -90,7 +91,11 @@ const FewReasons = () => {
           <span>Top rated by customers & IAA Registered</span>
         </p>
 
-        <button className="secondary-btn">Discover More</button>
+        <Button
+          title={"Discover More"}
+          style={"primary-btn"}
+          route={"/services"}
+        />
       </motion.div>
     </section>
   );

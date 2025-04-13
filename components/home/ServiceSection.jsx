@@ -9,28 +9,34 @@ import {
   FaBriefcase,
 } from "react-icons/fa";
 import { RiGlobalFill } from "react-icons/ri";
+import { Button } from "../basic-setup/Button";
 
 const ServicesSection = () => {
   const services = [
     {
       name: "Global Talent",
       icon: <RiGlobalFill className="text-2xl text-yellow-600" />,
+      id: "global-talent",
     },
     {
       name: "Tourist Visa",
       icon: <FaUmbrellaBeach className="text-2xl text-yellow-600" />,
+      id: "visitor",
     },
     {
       name: "Student Visa",
       icon: <FaGraduationCap className="text-2xl text-yellow-600" />,
+      id: "student",
     },
     {
       name: "Residence Visa",
       icon: <FaHome className="text-2xl text-yellow-600" />,
+      id: "self-sponsorship",
     },
     {
       name: "Business Visa",
       icon: <FaBriefcase className="text-2xl text-yellow-600" />,
+      id: "business-license",
     },
   ];
 
@@ -107,7 +113,12 @@ const ServicesSection = () => {
           <p className="text-xl font-semibold text-gray-800 mb-6">
             Get visa with 100% success rate
           </p>
-          <button className="primary-btn">Apply Now</button>
+
+          <Button
+            title={"Apply Now"}
+            style={"primary-btn"}
+            route={"/contact"}
+          />
         </motion.div>
       </div>
     </section>

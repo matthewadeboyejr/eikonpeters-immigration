@@ -68,10 +68,10 @@ const BusinessLicense = () => {
             <span className="font-bold">
               Please note: As a registered IAA Level 1 Organisation
             </span>
-            , we do not provide immigration advice or assistance on the Global
-            Talent Visa directly. However, we work in partnership with qualified
-            immigration professionals who are authorised to assist at Level 2 or
-            3.
+            , we do not provide immigration advice or assistance on the UK
+            Business License Visa directly. However, we work in partnership with
+            qualified immigration professionals who are authorised to assist at
+            Level 2 or 3.
           </p>
           <p className="text-black">
             Let&apos;s get you started—confidently and compliantly.

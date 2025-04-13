@@ -7,7 +7,10 @@ import { fadeInUp, staggerContainer } from "../animation/animation";
 
 const GlobalTalent = () => {
   return (
-    <section className="globaltalent-overlay py-20 px-10 md:px-40 bg-blue-50 md:mt-10">
+    <section
+      className="globaltalent-overlay py-20 px-10 md:px-40 bg-blue-50 md:mt-10"
+      id="global-talent"
+    >
       <Breadcrumb prevPage={"Home"} currentPage={"Services"} />
       <motion.div
         className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center"
@@ -78,12 +81,12 @@ const GlobalTalent = () => {
           </ul>
           <p className="text-white border-y py-4">
             <span className="font-bold">
-              Please note: As a registered IAA Level 1 Organisation
+              “Please note: As a registered IAA Level 1 Organisation
             </span>
             , we do not provide immigration advice or assistance on the Global
             Talent Visa directly. However, we work in partnership with qualified
             immigration professionals who are authorised to assist at Level 2 or
-            3.
+            3.”
           </p>
           <p className="text-white">
             Let&apos;s help you take the next step in your global journey.

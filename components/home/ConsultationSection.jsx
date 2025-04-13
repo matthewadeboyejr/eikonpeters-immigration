@@ -27,18 +27,17 @@ const ConsultationSection = () => {
                 CONTACT WITH US
               </p>
               <h2 className="h2 text-4xl font-bold leading-snug">
-                Book your
+                Want to Connect With{" "}
                 <span className="text-yellow-500 font-extrabold">
-                  {" "}
-                  consultation
+                  Our Team?
                 </span>
               </h2>
               <div className="w-16 h-1 bg-yellow-500"></div>
             </div>
 
             <p className="font-semibold">
-              We are dedicated to making your immigration journey as smooth and
-              stress-free as possible.
+              Schedule a free callback, and one of our team members will connect
+              with you to discuss your requirements and assess your case.
             </p>
 
             <div className="flex items-center justify-between flex-wrap gap-4">

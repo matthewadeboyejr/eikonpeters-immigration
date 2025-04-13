@@ -2,6 +2,7 @@
 import { motion } from "framer-motion";
 import { FaGraduationCap, FaBookOpen, FaSearch } from "react-icons/fa";
 import { RiGlobalFill } from "react-icons/ri";
+import { Button } from "../basic-setup/Button";
 
 const TrainingCertification = () => {
   const trainingItems = [
@@ -114,10 +115,11 @@ const TrainingCertification = () => {
           transition={{ delay: 0.6 }}
           className="text-center mt-12"
         >
-          <button className="primary-btn inline-flex items-center transition-colors">
-            <FaSearch className="mr-2" />
-            Discover More
-          </button>
+          <Button
+            title={"Discover More"}
+            style={"primary-btn"}
+            route={"/services"}
+          />
         </motion.div>
       </div>
     </section>

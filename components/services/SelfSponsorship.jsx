@@ -83,12 +83,12 @@ const SelfSponsorship = () => {
           </ul>
           <p className="text-black border-y py-4">
             <span className="font-bold">
-              Please note: As a registered IAA Level 1 Organisation
+              “Please note: As a registered IAA Level 1 Organisation,
             </span>
-            , we do not provide immigration advice or assistance on the Global
-            Talent Visa directly. However, we work in partnership with qualified
+            we do not provide immigration advice or assistance on the Self
+            Sponsorship directly. However, we work in partnership with qualified
             immigration professionals who are authorised to assist at Level 2 or
-            3.
+            3.”
           </p>
           <p className="text-black">
             Take charge of your future, build a business you believe in, and

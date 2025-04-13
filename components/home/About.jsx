@@ -2,6 +2,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { RiGlobalLine } from "react-icons/ri";
+import { Button } from "../basic-setup/Button";
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 40 },
@@ -65,8 +66,11 @@ const About = () => {
               </div>
             </div>
           </div>
-
-          <button className="primary-btn mt-6">Discover More</button>
+          <Button
+            title={"Discover More"}
+            style={"primary-btn"}
+            route={"/services"}
+          />
         </motion.div>
 
         <motion.div

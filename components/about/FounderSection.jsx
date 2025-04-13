@@ -39,22 +39,30 @@ const FounderSection = () => {
 
             <div className="space-y-4 text-gray-600">
               <p>
-                Eikon Peters Immigration service LTD, under the leadership of
-                founder Olamide Adedeji, leverages 15 years of expertise in
-                global immigration law and cross-border policy development. With
-                experience spanning government agencies, corporate relocation,
-                academic visa programs, and humanitarian migration, Olamide has
-                successfully guided over 5,000 individuals and families through
-                complex immigration processes worldwide.
+                Eikon Peters Immigration Services Ltd, under the leadership of
+                founder Olamide Adedeji, is shaped by years of practical
+                engagement in global immigration and cross-border policy
+                development. Olamide has engaged with hundreds of individuals,
+                families, and professionals, providing trusted guidance through
+                various immigration processes across the UK and beyond. His
+                experience spans government collaboration, corporate relocation,
+                academic visa programs, and humanitarian pathways, making him a
+                respected voice in the immigration space. Olamide is a
+                registered OISC Immigration Adviser, committed to ethical and
+                compliant immigration support. Beyond formal services, he has
+                also contributed to his community through informal advisory
+                roles, seminars, and mentoring—helping many take informed steps
+                towards legal migration pathways.
               </p>
 
               <div className="flex items-start space-x-4">
                 <FaUserGraduate className="flex-shrink-0 text-yellow-600 mt-1" />
                 <p>
-                  A recognized authority in immigration strategy, Olamide has
-                  trained 800+ legal professionals and developed certification
-                  programs adopted by immigration boards in Canada, the UK,
-                  Australia, and the United States.
+                  A recognized expert in both immigration strategy and
+                  Information Technology, Olamide has trained over 1500
+                  professionals and developed mentorship and certification
+                  programs across Canada, the UK, Australia, Nigeria, and the
+                  United States.
                 </p>
               </div>
 
@@ -63,7 +71,7 @@ const FounderSection = () => {
                 <p>
                   His unique approach combines rigorous legal expertise with
                   deep cultural understanding, having personally assisted
-                  clients from 60+ countries in achieving their immigration
+                  clients from 8+ countries in achieving their immigration
                   goals.
                 </p>
               </div>
@@ -74,21 +82,21 @@ const FounderSection = () => {
                 Olamide Adedeji
               </h3>
               <p className="text-gray-600 font-medium">
-                Immigration Strategist | Global Mobility Expert | IT Project
-                Management Leader | Agile Practitioner | Strategic Solutions
+                Immigration Strategist | Global Mobility Expert | Information
+                Technology Leader | Agile Practitioner | Strategic Solutions
                 Driver
               </p>
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
               {[
-                { icon: <FaGlobeAmericas />, text: "60+ Countries Served" },
+                { icon: <FaGlobeAmericas />, text: "8+ Countries Served" },
                 { icon: <FaBalanceScale />, text: "98% Success Rate" },
                 {
                   icon: <FaUserGraduate />,
-                  text: "800+ Professionals Trained",
+                  text: "1500+ Professionals Trained",
                 },
-                { icon: <FaHandshake />, text: "5,000+ Cases Managed" },
+                { icon: <FaHandshake />, text: "100+ Cases Managed" },
               ].map((item, index) => (
                 <div
                   key={index}

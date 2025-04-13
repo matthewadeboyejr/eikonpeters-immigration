@@ -1,8 +1,13 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { Button } from "../basic-setup/Button";
 
 const Header = () => {
+  const router = useRouter();
+
   return (
     <header className="header-overlay px-6 md:px-20 lg:px-40 py-10 flex items-center ">
       <motion.div
@@ -36,20 +41,18 @@ const Header = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.2, delay: 0.2 }}
         >
-          <motion.button
-            className="primary-btn"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            Explore more
-          </motion.button>
-          <motion.button
-            className="secondary-btn"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            Contact Now
-          </motion.button>
+          <Button
+            title={"Explore More"}
+            style={"primary-btn"}
+            route={"/services"}
+          />
+
+          <Button
+            title={"Contact Now"}
+            style={"secondary-btn"}
+            route={"/contact"}
+            viewicon={"hidden"}
+          />
         </motion.div>
       </motion.div>
     </header>
