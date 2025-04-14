@@ -314,7 +314,7 @@ const ContactUs = () => {
                 className="w-full bg-amber-500 hover:bg-amber-600 text-white font-medium py-3 px-6 rounded-lg transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
                 style={{ backgroundColor: styles.primaryColor }}
               >
-                {isSubmitting ? "Sending..." : "Book Consultation Now"}
+                {isSubmitting ? "Sending..." : "Submit Callback Request"}
               </button>
             </form>
           </motion.div>
