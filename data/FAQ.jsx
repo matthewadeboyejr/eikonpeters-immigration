@@ -13,12 +13,6 @@ const FAQ = [
       "It depends on the specific application category and your circumstances. Some visas require applying from abroad (e.g. Global Mobility Visa, Ancestry Visa, Youth Mobility Visa), while others allow for in-country applications if switching from a qualifying visa (e.g. Family Visas, certain Settlement Visas).",
   },
   {
-    id: "3",
-    question: "⁠How do I find a service provider on the app?",
-    answer:
-      "Simply browse the app’s listings by service type, enter your location, and you’ll see a selection of qualified professionals nearby. Each provider has a profile with ratings and reviews, helping you make an informed choice.",
-  },
-  {
     id: "4",
     question: "Can you help my family and I with our visa application?",
     answer:
