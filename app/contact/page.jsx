@@ -1,11 +1,11 @@
-import ConsultationSection from "@/components/home/ConsultationSection";
+import ContactUs from "@/components/home/ContactUs";
 import Faq from "@/components/home/Faq";
 import React from "react";
 
 const page = () => {
   return (
     <div>
-      <ConsultationSection />
+      <ContactUs />
       <Faq />
     </div>
   );

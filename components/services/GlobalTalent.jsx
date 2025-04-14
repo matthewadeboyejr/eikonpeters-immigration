@@ -8,7 +8,7 @@ import { fadeInUp, staggerContainer } from "../animation/animation";
 const GlobalTalent = () => {
   return (
     <section
-      className="globaltalent-overlay py-20 px-10 md:px-40 bg-blue-50 md:mt-10"
+      className="globaltalent-overlay py-20 px-10 md:px-40 bg-blue-50 "
       id="global-talent"
     >
       <Breadcrumb prevPage={"Home"} currentPage={"Services"} />

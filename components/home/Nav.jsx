@@ -6,8 +6,6 @@ import {
   FaPhone,
   FaEnvelope,
   FaMapMarkerAlt,
-  FaUser,
-  FaSearch,
   FaBars,
   FaTimes,
   FaChevronDown,
@@ -15,13 +13,13 @@ import {
   FaCalendarAlt,
 } from "react-icons/fa";
 import Image from "next/image";
+import { Button } from "../basic-setup/Button";
 
 const Nav = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [isScrolled, setIsScrolled] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
   const mobileMenuRef = useRef(null);
   const searchRef = useRef(null);
 
@@ -273,9 +271,11 @@ const Nav = () => {
                   </div>
                 ))}
                 <div className="pt-4 space-y-3">
-                  <a href="" className="inline-flex primary-btn">
-                    Free Assessment
-                  </a>
+                  <Button
+                    title={"Free Assessment"}
+                    style={"secondary-btn"}
+                    route={"/contact"}
+                  />
                 </div>
               </div>
             </motion.div>
