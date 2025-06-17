@@ -1,13 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import {
-  FaPhone,
-  FaEnvelope,
-  FaMapMarkerAlt,
-  FaCalendarAlt,
-  FaClock,
-} from "react-icons/fa";
+import { FaCalendarAlt } from "react-icons/fa";
 import { RiGlobalLine } from "react-icons/ri";
 import { useState, useRef } from "react";
 import Calendar from "react-calendar";
