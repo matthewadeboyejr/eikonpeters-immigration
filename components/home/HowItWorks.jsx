@@ -99,7 +99,7 @@ const HowItWorks = () => {
           <Button
             title={"Book Consultation"}
             style={"primary-btn"}
-            route={"https://forms.gle/SdekGucyTiim16Yh6"}
+            route={"https://booking.appointy.com/EikonImmigration"}
             viewicon={"hidden"}
           />
         </motion.div>

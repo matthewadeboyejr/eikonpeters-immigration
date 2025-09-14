@@ -75,13 +75,7 @@ const Others = () => {
             navigate every step toward your UK immigration success.
           </p>
 
-          <a
-            href="https://forms.gle/SdekGucyTiim16Yh6"
-            className="hidden md:inline-flex items-center primary-btn"
-          >
-            <FaCalendarAlt className="mr-2" />
-            Book Consultation
-          </a>
+          <BookButton />
         </motion.div>
 
         <motion.div

@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { FaCalendarAlt } from "react-icons/fa";
 import { IoCheckbox } from "react-icons/io5";
 import { fadeInUp, staggerContainer } from "../animation/animation";
+import BookButton from "../basic-setup/Button";
 
 const GlobalTalent = () => {
   return (
@@ -94,13 +95,7 @@ const GlobalTalent = () => {
             the information and support you need from the start.
           </p>
 
-          <a
-            href="https://forms.gle/SdekGucyTiim16Yh6"
-            className="hidden md:inline-flex items-center primary-btn"
-          >
-            <FaCalendarAlt className="mr-2" />
-            Book Consultation
-          </a>
+          <BookButton />
         </motion.div>
 
         <motion.div

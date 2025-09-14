@@ -48,6 +48,40 @@ export default function RootLayout({ children }) {
             `,
           }}
         />
+        <Script
+          id="appointy-config"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              if (typeof(window.Appointy) === 'undefined') {
+                window.Appointy = {};
+              }
+              window.Appointy.config = {
+                business: 'EikonImmigration',
+                defaultTab: 'Schedule',
+                extraParameter: '',
+                buttonImg: '',
+                modal: {
+                  height: '100%',
+                  width: '100%'
+                },
+                buttonAlign: "Right",
+                buttonPosition: "40"
+              };
+              jQuery(document).ready(function() {
+                jQuery("#bookAppointy").click(function(){
+                  jQuery("#app-widget-btn").click();
+                  return false;
+                });
+              });
+            `,
+          }}
+        />
+        <Script
+          id="appointy-widget"
+          src="https://cdn.appointy.com/web/blob-web/js/appointy-widget.js"
+          strategy="afterInteractive"
+        />
       </head>
       <body>
         <Nav />

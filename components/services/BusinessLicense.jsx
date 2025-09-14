@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { FaCalendarAlt, FaCheck, FaUserGraduate } from "react-icons/fa";
 import { IoCheckbox } from "react-icons/io5";
 import { fadeInUp, staggerContainer } from "../animation/animation";
+import BookButton from "../basic-setup/Button";
 
 const BusinessLicense = () => {
   return (
@@ -77,13 +78,7 @@ const BusinessLicense = () => {
             Let&apos;s get you started—confidently and compliantly.
           </p>
 
-          <a
-            href="https://forms.gle/SdekGucyTiim16Yh6"
-            className="hidden md:inline-flex items-center primary-btn"
-          >
-            <FaCalendarAlt className="mr-2" />
-            Book Consultation
-          </a>
+          <BookButton />
         </motion.div>
 
         <motion.div
