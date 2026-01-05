@@ -3,6 +3,7 @@ import "./globals.css";
 import Nav from "@/components/home/Nav";
 import Footer from "@/components/home/Footer";
 import Script from "next/script";
+import AppointletWidget from "@/components/AppointletWidget";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -35,6 +36,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${inter.variable} antialiased`}>
       <head>
+        <link href="https://js.appointlet.com/styles.css" rel="stylesheet" />
         <Script
           id="gtm-script"
           strategy="afterInteractive"
@@ -48,44 +50,18 @@ export default function RootLayout({ children }) {
             `,
           }}
         />
-        <Script
-          id="appointy-config"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              if (typeof(window.Appointy) === 'undefined') {
-                window.Appointy = {};
-              }
-              window.Appointy.config = {
-                business: 'EikonImmigration',
-                defaultTab: 'Schedule',
-                extraParameter: '',
-                buttonImg: '',
-                modal: {
-                  height: '100%',
-                  width: '100%'
-                },
-                buttonAlign: "Right",
-                buttonPosition: "40"
-              };
-              jQuery(document).ready(function() {
-                jQuery("#bookAppointy").click(function(){
-                  jQuery("#app-widget-btn").click();
-                  return false;
-                });
-              });
-            `,
-          }}
-        />
-        <Script
-          id="appointy-widget"
-          src="https://cdn.appointy.com/web/blob-web/js/appointy-widget.js"
-          strategy="afterInteractive"
-        />
       </head>
       <body>
+        <Script
+          id="appointlet-script"
+          src="https://js.appointlet.com/"
+          strategy="afterInteractive"
+          async
+          defer
+        />
         <Nav />
         {children}
+        <AppointletWidget />
         <Footer />
         <noscript>
           <iframe

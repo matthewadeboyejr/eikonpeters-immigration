@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 const BookButton = () => {
   return (
     <a
-      href="https://booking.appointy.com/EikonImmigration"
+      href="https://appt.link/eikon-peters-immigration/immigration-consultation"
       className="hidden md:inline-flex items-center primary-btn cursor-pointer"
     >
       <FaCalendarAlt className="mr-2" />

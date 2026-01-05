@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@appointlet/appointlet.js": "^3.0.7",
     "@emailjs/browser": "^4.4.1",
     "framer-motion": "^12.6.3",
     "motion": "^12.6.3",

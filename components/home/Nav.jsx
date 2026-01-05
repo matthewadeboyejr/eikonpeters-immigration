@@ -196,7 +196,7 @@ const Nav = () => {
             {/* Header Actions */}
             <div className="flex items-center space-x-4">
               <a
-                href="https://booking.appointy.com/EikonImmigration"
+                href="https://appt.link/eikon-peters-immigration/immigration-consultation"
                 className="hidden md:inline-flex items-center primary-btn"
               >
                 <FaCalendarAlt className="mr-2" />
