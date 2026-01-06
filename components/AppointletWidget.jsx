@@ -1,8 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { FaCalendarAlt, FaTimes } from "react-icons/fa";
-
 export default function AppointletWidget({ setOpenBookWidget }) {
   return (
     <>
