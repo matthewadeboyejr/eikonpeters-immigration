@@ -99,7 +99,9 @@ const HowItWorks = () => {
           <Button
             title={"Book Consultation"}
             style={"primary-btn"}
-            route={"https://booking.appointy.com/EikonImmigration"}
+            route={
+              "https://appt.link/eikon-peters-immigration/immigration-consultation"
+            }
             viewicon={"hidden"}
           />
         </motion.div>

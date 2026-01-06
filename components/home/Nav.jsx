@@ -14,8 +14,10 @@ import {
 } from "react-icons/fa";
 import Image from "next/image";
 import { Button } from "../basic-setup/Button";
+import AppointletWidget from "../AppointletWidget";
 
 const Nav = () => {
+  const [openBookWidget, setOpenBookWidget] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -123,23 +125,24 @@ const Nav = () => {
 
       {/* Main Header */}
       <header
-        className={`sticky top-0 z-50 transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 ${
           isScrolled ? "bg-white shadow-md" : "bg-white"
         }`}
       >
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex justify-between items-center h-20">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 w-full">
+          <div className="flex justify-between items-center h-20 w-full">
             {/* Logo */}
-
-            <Image
-              className=" w-36 "
-              src="/images/Eikon-Peter-Social-Media.svg"
-              alt="Logo"
-              width={200}
-              height={200}
-              priority
-              unoptimized
-            />
+            <div className="flex-shrink-0">
+              <Image
+                className="w-24 md:w-36 h-auto"
+                src="/images/Eikon-Peter-Social-Media.svg"
+                alt="Logo"
+                width={200}
+                height={200}
+                priority
+                unoptimized
+              />
+            </div>
 
             {/* Desktop Navigation */}
             <nav className="hidden lg:flex items-center space-x-1">
@@ -194,23 +197,24 @@ const Nav = () => {
             </nav>
 
             {/* Header Actions */}
-            <div className="flex items-center space-x-4">
-              <a
-                href="https://appt.link/eikon-peters-immigration/immigration-consultation"
-                className="hidden md:inline-flex items-center primary-btn"
-              >
-                <FaCalendarAlt className="mr-2" />
-                Book Consultation
-              </a>
+            <div className="flex items-center space-x-1 md:space-x-4 flex-shrink-0">
               <button
-                className="lg:hidden p-2 text-gray-700 focus:outline-none"
+                className="inline-flex items-center primary-btn text-xs md:text-base px-2  py-2 md:py-3 whitespace-nowrap"
+                onClick={() => setOpenBookWidget(true)}
+              >
+                <FaCalendarAlt className="mr-1 md:mr-2 text-xs md:text-base" />
+                <span className="hidden sm:inline">Book Consultation</span>
+                <span className="sm:hidden">Book Consultation</span>
+              </button>
+              <button
+                className="lg:hidden p-2 text-gray-700 focus:outline-none flex-shrink-0"
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 aria-label="Menu"
               >
                 {isMobileMenuOpen ? (
-                  <FaTimes size={24} />
+                  <FaTimes size={20} />
                 ) : (
-                  <FaBars size={24} />
+                  <FaBars size={20} />
                 )}
               </button>
             </div>
@@ -282,6 +286,9 @@ const Nav = () => {
           )}
         </AnimatePresence>
       </header>
+      {openBookWidget && (
+        <AppointletWidget setOpenBookWidget={setOpenBookWidget} />
+      )}
     </>
   );
 };

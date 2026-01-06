@@ -34,7 +34,10 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${inter.variable} antialiased`}>
+    <html
+      lang="en"
+      className={`${inter.variable} antialiased overflow-x-hidden`}
+    >
       <head>
         <link href="https://js.appointlet.com/styles.css" rel="stylesheet" />
         <Script
@@ -51,7 +54,7 @@ export default function RootLayout({ children }) {
           }}
         />
       </head>
-      <body>
+      <body className="overflow-x-hidden">
         <Script
           id="appointlet-script"
           src="https://js.appointlet.com/"
@@ -61,7 +64,7 @@ export default function RootLayout({ children }) {
         />
         <Nav />
         {children}
-        <AppointletWidget />
+        {/* <AppointletWidget /> */}
         <Footer />
         <noscript>
           <iframe
