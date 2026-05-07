@@ -80,7 +80,7 @@ const GlobalTalent = () => {
               </p>
             </li>
           </ul>
-          <p className="text-white border-y py-4">
+          {/* <p className="text-white border-y py-4">
             <span className="font-bold">
               “Please note: As a registered IAA Level 1 Organisation
             </span>
@@ -88,7 +88,7 @@ const GlobalTalent = () => {
             Talent Visa directly. However, we work in partnership with qualified
             immigration professionals who are authorised to assist at Level 2 or
             3.”
-          </p>
+          </p> */}
           <p className="text-white">
             Let&apos;s help you take the next step in your global journey.
             We&apos;ll connect you to the right experts while providing you with

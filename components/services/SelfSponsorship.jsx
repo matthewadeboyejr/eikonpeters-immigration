@@ -81,15 +81,7 @@ const SelfSponsorship = () => {
               <p>Ongoing non-legal support throughout your business journey</p>
             </li>
           </ul>
-          <p className="text-black border-y py-4">
-            <span className="font-bold">
-              “Please note: As a registered IAA Level 1 Organisation,
-            </span>
-            we do not provide immigration advice or assistance on the Self
-            Sponsorship directly. However, we work in partnership with qualified
-            immigration professionals who are authorised to assist at Level 2 or
-            3.”
-          </p>
+
           <p className="text-black">
             Take charge of your future, build a business you believe in, and
             explore life in the UK — with the right professionals supporting

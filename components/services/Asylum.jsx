@@ -59,16 +59,7 @@ const Asylum = () => {
               <p>Guidance on how to prepare for your initial consultation</p>
             </li>
           </ul>
-          <p className="text-black border-y py-4">
-            At
-            <span className="font-bold">
-              Eikon Peters Immigration Services Ltd
-            </span>
-            , we are registered with the Immigration Advice Authority to provide
-            immigration advice and services at Level 1 only. All matters beyond
-            our regulatory scope, including asylum and humanitarian protection,
-            are referred to suitably regulated professionals.
-          </p>
+
           <p className="text-black">
             Your safety matters. Your case deserves expert support. Let us help
             you get the right advice from those fully qualified to provide it.
