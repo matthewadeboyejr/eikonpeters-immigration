@@ -2,9 +2,9 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { 
-  FaChevronLeft, 
-  FaEnvelope, 
+import {
+  FaChevronLeft,
+  FaEnvelope,
   FaPaperPlane,
   FaCheckCircle,
   FaShieldAlt
@@ -19,7 +19,7 @@ export default function ForgotPassword() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsLoading(true);
-    
+
     // Simulate recovery email sending
     setTimeout(() => {
       setIsLoading(false);
@@ -33,12 +33,12 @@ export default function ForgotPassword() {
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-yellow-500/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
       <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-blue-500/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"></div>
 
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="w-full max-w-md bg-white rounded-[2.5rem] shadow-2xl p-10 md:p-12 border border-gray-100 relative z-10"
       >
-        <Link 
+        <Link
           href="/admin/login"
           className="inline-flex items-center gap-2 text-sm font-bold text-gray-400 hover:text-gray-600 mb-10 transition-colors group"
         >
@@ -108,7 +108,7 @@ export default function ForgotPassword() {
               </div>
               <h2 className="text-3xl font-bold text-gray-900 mb-4">Email Sent!</h2>
               <p className="text-gray-500 text-sm leading-relaxed mb-8">
-                We&apos;ve sent a recovery link to <span className="font-bold text-gray-900">{email}</span>. Please check your inbox and spam folder.
+                We&apos;ve sent a recovery link to <span className="font-bold text-gray-900">{email}</span>. Please check your inbox or spam folder.
               </p>
               <button
                 onClick={() => setIsSent(false)}
@@ -121,9 +121,9 @@ export default function ForgotPassword() {
         </AnimatePresence>
 
         <div className="mt-12 pt-8 border-t border-gray-50 text-center">
-           <p className="text-[10px] text-gray-400 uppercase tracking-widest font-medium">
-             Secured by Eikon Peters Cyber-Shield
-           </p>
+          <p className="text-[10px] text-gray-400 uppercase tracking-widest font-medium">
+            Secured by Eikon Peters Cyber-Shield
+          </p>
         </div>
       </motion.div>
     </div>
