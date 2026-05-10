@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import Image from "next/image";
@@ -11,6 +12,11 @@ const Footer = () => {
   const [isScrolled, setIsScrolled] = useState(false);
 
   const mobileMenuRef = useRef(null);
+
+  const pathname = usePathname();
+  const isAdminPage = pathname?.startsWith("/admin");
+
+  if (isAdminPage) return null;
 
   // Navigation items with dropdowns
   const navItems = [
@@ -27,6 +33,8 @@ const Footer = () => {
         { name: "Tourist Visa", path: "/services" },
       ],
     },
+    { name: "Blog", path: "/blog" },
+    { name: "Guides", path: "/guides" },
     { name: "About Us", path: "/about" },
     { name: "Contact", path: "/contact" },
   ];

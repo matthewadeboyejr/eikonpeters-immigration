@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   FaPhone,
@@ -17,6 +18,8 @@ import { Button } from "../basic-setup/Button";
 import AppointletWidget from "../AppointletWidget";
 
 const Nav = () => {
+  const pathname = usePathname();
+  const isAdminPage = pathname?.startsWith("/admin");
   const [openBookWidget, setOpenBookWidget] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
@@ -24,6 +27,8 @@ const Nav = () => {
   const [searchOpen, setSearchOpen] = useState(false);
   const mobileMenuRef = useRef(null);
   const searchRef = useRef(null);
+
+  if (isAdminPage) return null;
 
   // Navigation items with dropdowns
   const navItems = [
@@ -38,6 +43,14 @@ const Nav = () => {
         { name: "Work Visa", path: "/services" },
         { name: "Business Visa", path: "/services" },
         { name: "Tourist Visa", path: "/services" },
+      ],
+    },
+    {
+      name: "Learn",
+      path: "#",
+      dropdown: [
+        { name: "Blog", path: "/blog" },
+        { name: "Guides", path: "/guides" },
       ],
     },
     { name: "About Us", path: "/about" },
