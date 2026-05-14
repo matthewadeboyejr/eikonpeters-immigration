@@ -15,12 +15,14 @@ export const blogPosts = [
       [[VIDEO]]
       <p>Applying for this visa involves a two-stage process: endorsement and visa application...</p>
     `,
-    category: "Visas",
+    category: "Global Talent Visa",
     author: "Eikon Peters",
     date: "May 10, 2026",
     image: "https://images.unsplash.com/photo-1513530534585-c7b1394c6d51?q=80&w=2071&auto=format&fit=crop",
-    tags: ["UK", "Global Talent", "Work Visa"],
-    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ"
+    tags: ["UK", "Technology", "Work"],
+    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+    isFeatured: true,
+    isPopular: true
   },
   {
     id: 2,
@@ -32,11 +34,13 @@ export const blogPosts = [
       <h2>1. Financial Documentation</h2>
       <p>Ensure you have clear evidence of funds to cover your tuition and living costs...</p>
     `,
-    category: "Education",
+    category: "Student Visa",
     author: "Eikon Peters",
     date: "May 8, 2026",
     image: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2070&auto=format&fit=crop",
-    tags: ["Student", "Education", "Study Abroad"]
+    tags: ["Canada", "Education", "Study Abroad"],
+    isFeatured: false,
+    isPopular: true
   },
   {
     id: 3,
@@ -46,11 +50,61 @@ export const blogPosts = [
     content: `
       <p>The UK's immigration landscape has changed significantly post-Brexit. The new points-based system treats EU and non-EU citizens equally...</p>
     `,
-    category: "Policy",
+    category: "Immigration Policy",
     author: "Eikon Peters",
     date: "May 5, 2026",
-    image: null, // No image for Post 3
-    tags: ["Brexit", "UK Policy", "Immigration"],
-    videoUrl: "https://www.youtube.com/embed/zO2v-65Y1jY"
+    image: "https://images.unsplash.com/photo-1521295121812-32007ef78672?q=80&w=2070&auto=format&fit=crop", 
+    tags: ["UK", "Policy", "EU", "Brexit"],
+    videoUrl: "https://www.youtube.com/embed/zO2v-65Y1jY",
+    isFeatured: false,
+    isPopular: false
+  },
+  {
+    id: 4,
+    title: "Canada Express Entry: A Complete Guide for 2026",
+    slug: "canada-express-entry-complete-guide",
+    excerpt: "Learn how to calculate your CRS score and increase your chances of obtaining Canadian Permanent Residency.",
+    content: `
+      <p>Canada's Express Entry system remains one of the fastest ways for skilled workers to immigrate to Canada. In 2026, several new categories have been introduced...</p>
+    `,
+    category: "Express Entry",
+    author: "Sarah Johnson",
+    date: "May 12, 2026",
+    image: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=2070&auto=format&fit=crop",
+    tags: ["Canada", "Permanent Residency", "Skilled Worker"],
+    isFeatured: true,
+    isPopular: true
+  },
+  {
+    id: 5,
+    title: "The Rise of Digital Nomad Visas: Where to Go in 2026",
+    slug: "rise-of-digital-nomad-visas-2026",
+    excerpt: "More countries are opening their doors to remote workers. We review the best options for digital nomads this year.",
+    content: `
+      <p>Working from anywhere in the world is no longer a dream but a reality for millions. Countries like Spain, Portugal, and Greece have launched competitive Digital Nomad visas...</p>
+    `,
+    category: "Digital Nomad Visa",
+    author: "Mark Evans",
+    date: "May 14, 2026",
+    image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2071&auto=format&fit=crop",
+    tags: ["Remote Work", "Lifestyle", "Europe"],
+    isFeatured: false,
+    isPopular: false
+  },
+  {
+    id: 6,
+    title: "Healthcare Professional Migration to Australia",
+    slug: "healthcare-migration-australia",
+    excerpt: "Australia is facing a critical shortage of healthcare workers. Find out how doctors and nurses can fast-track their visa applications.",
+    content: `
+      <p>The Australian government has prioritized healthcare professionals in its latest migration planning levels. Qualified doctors and nurses can benefit from priority processing...</p>
+    `,
+    category: "Work Visa",
+    author: "Jane Smith",
+    date: "May 1, 2026",
+    image: "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?q=80&w=2070&auto=format&fit=crop",
+    tags: ["Australia", "Healthcare", "Nursing"],
+    isFeatured: false,
+    isPopular: true
   }
 ];

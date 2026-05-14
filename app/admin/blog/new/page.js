@@ -29,7 +29,7 @@ export default function NewBlogPost() {
     slug: "",
     excerpt: "",
     content: "",
-    category: "Visas",
+    category: "Global Talent Visa",
     image: "",
     videoUrl: "",
     tags: ""
@@ -262,10 +262,13 @@ export default function NewBlogPost() {
                   value={formData.category}
                   onChange={handleChange}
                 >
-                  <option>Visas</option>
-                  <option>Education</option>
-                  <option>Policy</option>
-                  <option>Relocation</option>
+                  <option>Global Talent Visa</option>
+                  <option>Student Visa</option>
+                  <option>Express Entry</option>
+                  <option>Work Visa</option>
+                  <option>Digital Nomad Visa</option>
+                  <option>Immigration Policy</option>
+                  <option>Lifestyle</option>
                 </select>
               </div>
             </div>

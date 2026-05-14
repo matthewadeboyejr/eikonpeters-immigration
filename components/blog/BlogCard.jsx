@@ -50,9 +50,17 @@ const BlogCard = ({ post }) => {
           </h3>
         </Link>
 
-        <p className="text-gray-600 text-sm mb-6 line-clamp-3 flex-grow">
+        <p className="text-gray-600 text-sm mb-6 line-clamp-3">
           {post.excerpt}
         </p>
+
+        <div className="flex flex-wrap gap-2 mb-6">
+          {post.tags.slice(0, 3).map((tag) => (
+            <span key={tag} className="text-[10px] font-bold text-gray-400 uppercase tracking-widest bg-gray-50 px-2 py-1 rounded">
+              #{tag}
+            </span>
+          ))}
+        </div>
 
         <Link
           href={`/blog/${post.slug}`}

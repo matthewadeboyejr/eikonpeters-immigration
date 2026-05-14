@@ -2,7 +2,7 @@ import React from "react";
 import { blogPosts } from "@/data/blogPosts";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { FaCalendarAlt, FaUser, FaChevronLeft, FaTag } from "react-icons/fa";
+import { FaCalendarAlt, FaUser, FaChevronLeft, FaTag, FaTwitter, FaFacebookF, FaLinkedinIn } from "react-icons/fa";
 
 export async function generateStaticParams() {
   return blogPosts.map((post) => ({
@@ -115,13 +115,17 @@ export default async function BlogPostPage({ params }) {
               <div>
                 <p className="text-[10px] uppercase tracking-widest text-gray-400 font-bold mb-4">Share this post</p>
                 <div className="flex flex-wrap gap-3">
-                  {["Twitter", "Facebook", "LinkedIn"].map((platform) => (
+                  {[
+                    { name: "Twitter", icon: FaTwitter },
+                    { name: "Facebook", icon: FaFacebookF },
+                    { name: "LinkedIn", icon: FaLinkedinIn },
+                  ].map((platform) => (
                     <button 
-                      key={platform}
+                      key={platform.name}
                       className="w-10 h-10 rounded-full border border-gray-100 flex items-center justify-center text-gray-500 hover:bg-yellow-500 hover:border-yellow-500 hover:text-white transition-all"
-                      title={`Share on ${platform}`}
+                      title={`Share on ${platform.name}`}
                     >
-                      <span className="text-[10px] font-bold">{platform[0]}</span>
+                      <platform.icon size={16} />
                     </button>
                   ))}
                 </div>
