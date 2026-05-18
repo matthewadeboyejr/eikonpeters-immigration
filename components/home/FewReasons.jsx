@@ -1,7 +1,7 @@
 "use client";
 
 import { FaUserTie, FaGlobe, FaShieldAlt, FaHeadset } from "react-icons/fa";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import { Button } from "../basic-setup/Button";
 
 const features = [

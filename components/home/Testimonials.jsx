@@ -138,6 +138,7 @@ const Testimonials = () => {
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
           transition={{ delay: 0.4 }}
           className="flex justify-center mt-4 space-x-2"
         >

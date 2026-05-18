@@ -49,8 +49,9 @@ const Faq = () => {
                 opacity: 0,
               }}
               whileInView={{ y: 0, x: 0, opacity: 1 }}
+              viewport={{ once: true, margin: "-50px" }}
               whileTap={{ scale: 0.95 }}
-              transition={{ duration: 1, stiffnes: 1000, velocity: -100 }}
+              transition={{ type: "spring", stiffness: 150, damping: 20 }}
               key={faq.id}
               className="space-y-3 border border-secondary/30  p-5 rounded-3xl"
             >
@@ -81,7 +82,8 @@ const Faq = () => {
           opacity: 0,
         }}
         whileInView={{ y: 0, x: 0, opacity: 1 }}
-        transition={{ duration: 1, stiffnes: 1000, velocity: -100 }}
+        viewport={{ once: true }}
+        transition={{ type: "spring", stiffness: 150, damping: 20 }}
         className=" flex md:flex-row flex-col  w-full items-center justify-center space-x-5 space-y-5 md:space-y-0   "
       >
         <button onClick={handleSlice} className=" primary-btn  ">

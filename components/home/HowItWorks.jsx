@@ -85,6 +85,7 @@ const HowItWorks = () => {
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
           transition={{ delay: 0.4 }}
           className="mt-16 bg-white rounded-xl p-8 shadow-sm text-center"
         >

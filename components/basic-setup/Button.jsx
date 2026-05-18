@@ -1,6 +1,6 @@
 import React from "react";
 import { FaCalendarAlt, FaSearch } from "react-icons/fa";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 
 const BookButton = () => {
