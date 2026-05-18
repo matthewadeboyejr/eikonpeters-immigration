@@ -1,188 +1,93 @@
 "use client";
-
-import { useState, useEffect, useRef } from "react";
+import React from "react";
 import { usePathname } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
-import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import Image from "next/image";
-import BookButton from "../basic-setup/Button";
+import { FaEnvelope, FaMapMarkerAlt } from "react-icons/fa";
 
 const Footer = () => {
-  const [activeDropdown, setActiveDropdown] = useState(null);
-  const [isScrolled, setIsScrolled] = useState(false);
-
-  const mobileMenuRef = useRef(null);
-
   const pathname = usePathname();
   const isAdminPage = pathname?.startsWith("/admin");
 
   if (isAdminPage) return null;
 
-  // Navigation items with dropdowns
-  const navItems = [
-    { name: "Home", path: "/" },
-    {
-      name: "Services",
-      path: "/services",
-      dropdown: [
-        { name: "Global Talent Visa", path: "/services" },
-        { name: "Family Visa", path: "/services" },
-        { name: "Student Visa", path: "/services" },
-        { name: "Work Visa", path: "/services" },
-        { name: "Business Visa", path: "/services" },
-        { name: "Tourist Visa", path: "/services" },
-      ],
-    },
-    { name: "Blog", path: "/blog" },
-    { name: "Guides", path: "/guides" },
-    { name: "About Us", path: "/about" },
-    { name: "Contact", path: "/contact" },
-  ];
-
-  const toggleDropdown = (index) => {
-    setActiveDropdown(activeDropdown === index ? null : index);
-  };
-
   return (
-    <>
-      {/* Main Header */}
-      <footer
-        className="sticky top-0 z-50 transition-all duration-300 
-         bg-white"
-      >
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex justify-between items-center h-20">
-            {/* Logo */}
-
-            <Image
-              className=" w-36 "
-              src="/images/Eikon-Peter-Social-Media.svg"
-              alt="Logo"
-              width={200}
-              height={200}
-              priority
-              unoptimized
-            />
-
-            {/* Desktop Navigation */}
-            <nav className="hidden lg:flex items-center space-x-1">
-              {navItems.map((item, index) => (
-                <div key={index} className="relative">
-                  <div className="flex items-center">
-                    <a
-                      href={item.path}
-                      className="px-4 py-2 font-medium text-gray-800 hover:text-yellow-600 transition-colors"
-                    >
-                      {item.name}
-                    </a>
-                  </div>
-
-                  {item.dropdown && (
-                    <AnimatePresence>
-                      {activeDropdown === index && (
-                        <motion.div
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: 10 }}
-                          transition={{ duration: 0.2 }}
-                          className="absolute left-0 mt-0 w-56 bg-white rounded-md shadow-xl z-50 border border-gray-100"
-                        >
-                          {item.dropdown.map((subItem, subIndex) => (
-                            <a
-                              key={subIndex}
-                              href={subItem.path}
-                              className="block px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-yellow-600 transition-colors border-b border-gray-100 last:border-0"
-                            >
-                              {subItem.name}
-                            </a>
-                          ))}
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  )}
-                </div>
-              ))}
-            </nav>
-          </div>
+    <footer className="bg-gray-900 text-gray-300 pt-16 pb-8 px-6 md:px-20 lg:px-40 border-t border-gray-800">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+        {/* Company Info */}
+        <div className="space-y-4">
+          <Image
+            className="w-40 brightness-0 invert"
+            src="/images/Eikon-Peter-Social-Media.svg"
+            alt="Eikon Peters Logo"
+            width={200}
+            height={200}
+            priority
+            unoptimized
+          />
+          <p className="text-sm text-gray-400 leading-relaxed mt-4">
+            Eikon Peters Immigration Services is your trusted global immigration partner, providing professional guidance for work, study, family, and business visa pathways.
+          </p>
         </div>
 
-        {/* Mobile Menu */}
+        {/* Quick Links */}
+        <div>
+          <h4 className="text-white font-bold text-lg mb-4">Quick Links</h4>
+          <ul className="space-y-2 text-sm">
+            <li>
+              <a href="/" className="hover:text-yellow-500 transition-colors">Home</a>
+            </li>
+            <li>
+              <a href="/about" className="hover:text-yellow-500 transition-colors">About Us</a>
+            </li>
+            <li>
+              <a href="/services" className="hover:text-yellow-500 transition-colors">Services</a>
+            </li>
+            <li>
+              <a href="/blog" className="hover:text-yellow-500 transition-colors">Blog</a>
+            </li>
+            <li>
+              <a href="/guides" className="hover:text-yellow-500 transition-colors">Guides</a>
+            </li>
+            <li>
+              <a href="/contact" className="hover:text-yellow-500 transition-colors">Contact</a>
+            </li>
+          </ul>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: "auto" }}
-          exit={{ opacity: 0, height: 0 }}
-          transition={{ duration: 0.3 }}
-          className="lg:hidden bg-white shadow-lg overflow-hidden"
-          ref={mobileMenuRef}
-        >
-          <div className="px-6 py-4 space-y-2">
-            {navItems.map((item, index) => (
-              <div
-                key={index}
-                className="border-b border-gray-100 last:border-0"
-              >
-                <div className="flex justify-between items-center py-3">
-                  <a
-                    href={item.path}
-                    className="font-medium text-gray-800 hover:text-yellow-600 transition-colors"
-                  >
-                    {item.name}
-                  </a>
-                  {item.dropdown && (
-                    <button
-                      onClick={() => toggleDropdown(index)}
-                      className="p-2 text-gray-500 hover:text-yellow-600 focus:outline-none"
-                    >
-                      {activeDropdown === index ? (
-                        <FaChevronUp />
-                      ) : (
-                        <FaChevronDown />
-                      )}
-                    </button>
-                  )}
-                </div>
+        {/* Contact info */}
+        <div>
+          <h4 className="text-white font-bold text-lg mb-4">Contact Us</h4>
+          <ul className="space-y-3 text-sm">
+            <li className="flex items-center gap-3">
+              <FaEnvelope className="text-yellow-500" />
+              <span>info@eikonpetersimmigration.com</span>
+            </li>
+            <li className="flex items-start gap-3">
+              <FaMapMarkerAlt className="text-yellow-500 mt-1" />
+              <span>United Kingdom based consultants</span>
+            </li>
+          </ul>
+        </div>
+      </div>
 
-                {item.dropdown && activeDropdown === index && (
-                  <div className="pl-4 pb-2 space-y-2">
-                    {item.dropdown.map((subItem, subIndex) => (
-                      <a
-                        key={subIndex}
-                        href={subItem.path}
-                        className="block py-2 text-gray-600 hover:text-yellow-600 transition-colors"
-                      >
-                        {subItem.name}
-                      </a>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </motion.div>
-        {/* Disclaimer  Bar */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="bg-green-900 md:rounded-full md:mx-5  px-6 py-2   flex flex-col sm:flex-row items-center justify-between gap-4 shadow-md"
-        >
-          <p className="text-white text-center text-sm sm:text-base font-medium flex items-center gap-3">
-            <span>
-              Eikon Peters Immigration Services Ltd is regulated by the
-              Immigration Advice Authority <code>(IAA)</code> to provide
-              immigration advice and services at Level 1
-            </span>
-          </p>
-          <img
-            className="max-w-7 h-7 rounded-full"
-            src="../images/iaa.png"
-            alt="iaa logo"
-          />
-        </motion.div>
-      </footer>
-    </>
+      {/* Disclaimer Bar */}
+      <div className="max-w-7xl mx-auto bg-green-900 rounded-2xl md:rounded-full px-6 py-4 md:py-3 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-md mb-8">
+        <p className="text-white text-center text-sm md:text-base font-medium">
+          Eikon Peters Immigration Services Ltd is regulated by the Immigration Advice Authority (IAA) to provide immigration advice and services at Level 1.
+        </p>
+        <img
+          className="max-w-8 h-8 rounded-full"
+          src="../images/iaa.png"
+          alt="iaa logo"
+        />
+      </div>
+
+      {/* Copyright Bar */}
+      <div className="max-w-7xl mx-auto border-t border-gray-800 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-500">
+        <p>© {new Date().getFullYear()} Eikon Peters Immigration Services. All rights reserved.</p>
+        <p>Expert immigration consultation and visa support.</p>
+      </div>
+    </footer>
   );
 };
 

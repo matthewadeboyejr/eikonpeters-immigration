@@ -67,7 +67,7 @@ const About = () => {
               className="w-full h-full rounded-full overflow-hidden border-4 border-yellow-500 shadow-lg"
             >
               <img
-                src="https://sftaxcounsel.com/wp-content/themes/yootheme/cache/c4/shutterstock_1409773868-c44651c2.jpeg"
+                src="/images/about-img.jpeg"
                 alt="Passport"
                 className="w-full h-full object-cover"
               />
