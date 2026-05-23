@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
-import { guides } from "@/data/guides";
+import React, { useState, useMemo, useEffect } from "react";
 import GuideCard from "@/components/guides/GuideCard";
 import LeadFormModal from "@/components/guides/LeadFormModal";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaCalendarAlt, FaSearch, FaFire, FaClock, FaStar, FaChevronRight } from "react-icons/fa";
 import AppointletWidget from "@/components/AppointletWidget";
+import { createClient } from "@/utils/supabase/client";
 
 export default function GuidesPage() {
   const [selectedGuide, setSelectedGuide] = useState(null);
@@ -17,36 +17,81 @@ export default function GuidesPage() {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedTag, setSelectedTag] = useState("All");
   const [activeTab, setActiveTab] = useState("Latest"); // Latest, Popular, Featured
+  const [guidesList, setGuidesList] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const categories = useMemo(() => ["All", ...new Set(guides.map((g) => g.category))], []);
-  const allTags = useMemo(() => ["All", ...new Set(guides.flatMap((g) => g.tags))], []);
+  const supabase = createClient();
+
+  useEffect(() => {
+    async function loadGuides() {
+      try {
+        const { data, error } = await supabase
+          .from("guides")
+          .select("*")
+          .order("id", { ascending: false });
+
+        if (error) {
+          console.error("Error loading guides:", error);
+          return;
+        }
+
+        if (data) {
+          setGuidesList(data);
+        }
+      } catch (err) {
+        console.error("Error fetching guides:", err);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    loadGuides();
+  }, []);
+
+  const mappedGuides = useMemo(() => {
+    return guidesList.map((g) => ({
+      ...g,
+      thumbnail: g.image || g.thumbnail,
+      description: g.excerpt || g.description,
+      pdfUrl: g.file_url || g.pdfUrl
+    }));
+  }, [guidesList]);
+
+  const categories = useMemo(() => {
+    return ["All", ...new Set(mappedGuides.map((g) => g.category))];
+  }, [mappedGuides]);
+
+  const allTags = useMemo(() => {
+    return ["All", ...new Set(mappedGuides.flatMap((g) => g.tags || []))];
+  }, [mappedGuides]);
   
-  const featuredGuide = useMemo(() => guides.find(g => g.isFeatured), []);
+  const featuredGuide = useMemo(() => {
+    return mappedGuides.find(g => g.is_featured || g.isFeatured);
+  }, [mappedGuides]);
 
   const filteredGuides = useMemo(() => {
-    return guides.filter((guide) => {
+    return mappedGuides.filter((guide) => {
       const searchLower = searchTerm.toLowerCase();
       const matchesSearch = 
         guide.title.toLowerCase().includes(searchLower) || 
-        guide.description.toLowerCase().includes(searchLower) ||
+        (guide.description && guide.description.toLowerCase().includes(searchLower)) ||
         guide.category.toLowerCase().includes(searchLower) ||
-        guide.tags.some(tag => tag.toLowerCase().includes(searchLower));
+        (guide.tags && guide.tags.some(tag => tag.toLowerCase().includes(searchLower)));
 
       const matchesCategory = selectedCategory === "All" || guide.category === selectedCategory;
-      const matchesTag = selectedTag === "All" || guide.tags.includes(selectedTag);
+      const matchesTag = selectedTag === "All" || (guide.tags && guide.tags.includes(selectedTag));
 
       let matchesTab = true;
-      if (activeTab === "Featured") matchesTab = guide.isFeatured;
-      if (activeTab === "Popular") matchesTab = guide.isPopular;
+      if (activeTab === "Featured") matchesTab = guide.is_featured || guide.isFeatured;
+      if (activeTab === "Popular") matchesTab = guide.is_popular || guide.isPopular;
 
       return matchesSearch && matchesCategory && matchesTag && matchesTab;
     }).sort((a, b) => {
       if (activeTab === "Latest") {
-        return new Date(b.date) - new Date(a.date);
+        return new Date(b.created_at || b.date) - new Date(a.created_at || a.date);
       }
       return 0;
     });
-  }, [searchTerm, selectedCategory, selectedTag, activeTab]);
+  }, [searchTerm, selectedCategory, selectedTag, activeTab, mappedGuides]);
 
   const handleDownload = (guide) => {
     setSelectedGuide(guide);
@@ -216,7 +261,12 @@ export default function GuidesPage() {
               transition={{ duration: 0.3 }}
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10"
             >
-              {filteredGuides.length > 0 ? (
+              {isLoading ? (
+                <div className="col-span-full flex flex-col items-center justify-center py-20">
+                  <div className="w-10 h-10 border-4 border-yellow-500/20 border-t-yellow-500 rounded-full animate-spin"></div>
+                  <p className="text-xs text-gray-400 mt-4 font-bold uppercase tracking-widest animate-pulse">Fetching Guides...</p>
+                </div>
+              ) : filteredGuides.length > 0 ? (
                 filteredGuides.map((guide) => (
                   <GuideCard 
                     key={guide.id} 

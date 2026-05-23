@@ -4,6 +4,7 @@ import Nav from "@/components/home/Nav";
 import Footer from "@/components/home/Footer";
 import Script from "next/script";
 import AppointletWidget from "@/components/AppointletWidget";
+import { ToastProvider } from "@/context/ToastContext";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -55,25 +56,27 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body className="overflow-x-hidden">
-        <Script
-          id="appointlet-script"
-          src="https://js.appointlet.com/"
-          strategy="afterInteractive"
-          async
-          defer
-        />
-        <Nav />
-        {children}
-        {/* <AppointletWidget /> */}
-        <Footer />
-        <noscript>
-          <iframe
-            src="https://www.googletagmanager.com/ns.html?id=GTM-MG7XNLJM"
-            height="0"
-            width="0"
-            style={{ display: "none", visibility: "hidden" }}
+        <ToastProvider>
+          <Script
+            id="appointlet-script"
+            src="https://js.appointlet.com/"
+            strategy="afterInteractive"
+            async
+            defer
           />
-        </noscript>
+          <Nav />
+          {children}
+          {/* <AppointletWidget /> */}
+          <Footer />
+          <noscript>
+            <iframe
+              src="https://www.googletagmanager.com/ns.html?id=GTM-MG7XNLJM"
+              height="0"
+              width="0"
+              style={{ display: "none", visibility: "hidden" }}
+            />
+          </noscript>
+        </ToastProvider>
       </body>
     </html>
   );

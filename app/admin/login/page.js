@@ -13,51 +13,61 @@ import {
   FaArrowRight,
   FaCheckCircle
 } from "react-icons/fa";
-import { motion, AnimatePresence } from "framer-motion";
+import { createClient } from "@/utils/supabase/client";
 
 export default function AdminLogin() {
   const [mounted, setMounted] = useState(false);
-  const [step, setStep] = useState(1); // 1: Login, 2: 2FA
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const [twoFACode, setTwoFACode] = useState(["", "", "", "", "", ""]);
+  const [errorMsg, setErrorMsg] = useState("");
+
+  const supabase = createClient();
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-
-  const handleLoginSubmit = (e) => {
-    e.preventDefault();
-    setStep(2); 
-  };
-
-  const handle2FASubmit = (e) => {
+  const handleLoginSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    setErrorMsg("");
 
-    // Simulate verification
-    setTimeout(() => {
-      localStorage.setItem("admin_logged_in", "true");
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: formData.email,
+        password: formData.password,
+      });
+
+      if (error) {
+        setErrorMsg(error.message);
+        setIsLoading(false);
+        return;
+      }
+
+      // Check if user is in admins table
+      const { data: admin, error: adminError } = await supabase
+        .from("admins")
+        .select("id")
+        .eq("id", data.user.id)
+        .maybeSingle();
+
+      if (adminError || !admin) {
+        await supabase.auth.signOut();
+        setErrorMsg("Unauthorized: You do not have administrator privileges.");
+        setIsLoading(false);
+        return;
+      }
+
       setIsLoading(false);
       setIsSuccess(true);
       setTimeout(() => {
         window.location.href = "/admin"; // Redirect to dashboard
       }, 1000);
-    }, 1500);
-  };
-
-  const handleCodeChange = (index, value) => {
-    if (value.length > 1) return;
-    const newCode = [...twoFACode];
-    newCode[index] = value;
-    setTwoFACode(newCode);
-
-    // Auto-focus next input
-    if (value && index < 5) {
-      document.getElementById(`code-${index + 1}`).focus();
+    } catch (err) {
+      setErrorMsg("An unexpected error occurred. Please try again.");
+      setIsLoading(false);
     }
   };
 
@@ -87,7 +97,7 @@ export default function AdminLogin() {
                 <span className="text-yellow-500 text-3xl">Immigration Experts</span>
               </h1>
               <p className="text-gray-400 leading-relaxed">
-                Protecting sensitive client data with enterprise-grade encryption and multi-factor authentication.
+                Protecting sensitive client data with enterprise-grade encryption and secure access control.
               </p>
             </div>
           </div>
@@ -102,7 +112,7 @@ export default function AdminLogin() {
               <div className="bg-white/5 p-4 rounded-2xl backdrop-blur-md border border-white/10">
                 <FaFingerprint className="text-yellow-500 mb-2" size={20} />
                 <h4 className="text-sm font-bold">Smart Login</h4>
-                <p className="text-[10px] text-gray-500 uppercase tracking-widest mt-1">Multi-Factor Active</p>
+                <p className="text-[10px] text-gray-500 uppercase tracking-widest mt-1">Secure Access Active</p>
               </div>
             </div>
             <p className="text-[10px] text-gray-500 mt-8 uppercase tracking-[0.2em] font-medium">
@@ -113,143 +123,92 @@ export default function AdminLogin() {
 
         {/* Right Side: Login Form */}
         <div className="p-12 lg:p-20 flex flex-col justify-center">
-          {step === 1 ? (
-            <div className="space-y-8">
-              <div>
-                <h2 className="text-3xl font-bold text-gray-900 mb-2">Welcome Back</h2>
-                <p className="text-gray-500 text-sm">Please enter your administrative credentials.</p>
-              </div>
-
-              <form onSubmit={handleLoginSubmit} className="space-y-6">
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 ml-1">Email Address</label>
-                    <div className="relative group">
-                      <FaEnvelope className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-yellow-500 transition-colors" />
-                      <input
-                        type="email"
-                        required
-                        placeholder="admin@eikonpeters.com"
-                        className="w-full pl-12 pr-4 py-4 rounded-2xl border border-gray-100 bg-gray-50 focus:bg-white focus:border-yellow-500 focus:ring-4 focus:ring-yellow-500/5 outline-none transition-all"
-                        value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 ml-1">Security Password</label>
-                    <div className="relative group">
-                      <FaLock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-yellow-500 transition-colors" />
-                      <input
-                        type={showPassword ? "text" : "password"}
-                        required
-                        placeholder="••••••••••••"
-                        className="w-full pl-12 pr-12 py-4 rounded-2xl border border-gray-100 bg-gray-50 focus:bg-white focus:border-yellow-500 focus:ring-4 focus:ring-yellow-500/5 outline-none transition-all"
-                        value={formData.password}
-                        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                      />
-                      <button
-                        type="button"
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                      >
-                        {showPassword ? <FaEyeSlash /> : <FaEye />}
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <label className="flex items-center gap-2 cursor-pointer group">
-                    <input type="checkbox" className="w-4 h-4 rounded border-gray-300 text-yellow-500 focus:ring-yellow-500" />
-                    <span className="text-xs text-gray-500 group-hover:text-gray-700 transition-colors">Remember this device</span>
-                  </label>
-                  <Link href="/admin/forgot-password" size="xs" className="text-xs font-bold text-yellow-600 hover:text-yellow-700">
-                    Forgot Password?
-                  </Link>
-                </div>
-
-                <button
-                  type="button"
-                  onClick={() => {
-                    console.log("Button clicked!");
-                    setStep(2);
-                  }}
-                  className="w-full bg-gray-900 hover:bg-gray-800 text-white font-bold py-4 rounded-2xl transition-all shadow-xl shadow-gray-200 flex items-center justify-center gap-3 relative overflow-hidden"
-                >
-                  Verify Credentials
-                  <FaArrowRight size={14} />
-                </button>
-              </form>
+          <div className="space-y-8">
+            <div>
+              <h2 className="text-3xl font-bold text-gray-900 mb-2">Welcome Back</h2>
+              <p className="text-gray-500 text-sm">Please enter your administrative credentials.</p>
             </div>
-          ) : (
-            <div className="space-y-8 text-center">
-              <div className="bg-yellow-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
-                <FaShieldAlt className="text-yellow-600 text-3xl" />
-              </div>
 
-              <div>
-                <h2 className="text-3xl font-bold text-gray-900 mb-2">Two-Step Verification</h2>
-                <p className="text-gray-500 text-sm max-w-xs mx-auto">
-                  We&apos;ve sent a 6-digit security code to your registered mobile device.
-                </p>
-              </div>
-
-              <form onSubmit={handle2FASubmit} className="space-y-8">
-                <div className="flex justify-center gap-3">
-                  {twoFACode.map((digit, index) => (
+            <form onSubmit={handleLoginSubmit} className="space-y-6">
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 ml-1">Email Address</label>
+                  <div className="relative group">
+                    <FaEnvelope className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-yellow-500 transition-colors" />
                     <input
-                      key={index}
-                      id={`code-${index}`}
-                      type="text"
-                      maxLength={1}
-                      className="w-12 h-16 md:w-14 md:h-20 text-2xl font-bold text-center border border-gray-200 rounded-2xl focus:border-yellow-500 focus:ring-4 focus:ring-yellow-500/5 outline-none transition-all"
-                      value={digit}
-                      onChange={(e) => handleCodeChange(index, e.target.value)}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Backspace' && !digit && index > 0) {
-                          document.getElementById(`code-${index - 1}`).focus();
-                        }
-                      }}
+                      type="email"
+                      required
+                      placeholder="admin@eikonpeters.com"
+                      className="w-full pl-12 pr-4 py-4 rounded-2xl border border-gray-100 bg-gray-50 focus:bg-white focus:border-yellow-500 focus:ring-4 focus:ring-yellow-500/5 outline-none transition-all"
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     />
-                  ))}
-                </div>
-
-                <div className="space-y-6">
-                  <button
-                    type="submit"
-                    disabled={isLoading || isSuccess}
-                    className={`w-full font-bold py-4 rounded-2xl transition-all shadow-xl flex items-center justify-center gap-3 ${isSuccess ? 'bg-green-500 text-white' : 'bg-gray-900 hover:bg-gray-800 text-white'
-                      }`}
-                  >
-                    {isLoading ? (
-                      <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                    ) : isSuccess ? (
-                      <>
-                        <FaCheckCircle /> Access Granted
-                      </>
-                    ) : (
-                      "Verify and Unlock"
-                    )}
-                  </button>
-
-                  <div className="text-sm">
-                    <span className="text-gray-400">Didn&apos;t receive the code?</span>{" "}
-                    <button type="button" className="text-yellow-600 font-bold hover:underline">Resend</button>
                   </div>
                 </div>
-              </form>
+
+                <div>
+                  <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 ml-1">Security Password</label>
+                  <div className="relative group">
+                    <FaLock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-yellow-500 transition-colors" />
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      required
+                      placeholder="••••••••••••"
+                      className="w-full pl-12 pr-12 py-4 rounded-2xl border border-gray-100 bg-gray-50 focus:bg-white focus:border-yellow-500 focus:ring-4 focus:ring-yellow-500/5 outline-none transition-all"
+                      value={formData.password}
+                      onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    >
+                      {showPassword ? <FaEyeSlash /> : <FaEye />}
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {errorMsg && (
+                <div className="p-3 bg-red-50 border border-red-100 rounded-xl">
+                  <p className="text-xs text-red-600 font-semibold">{errorMsg}</p>
+                </div>
+              )}
+
+              <div className="flex items-center justify-between">
+                <label className="flex items-center gap-2 cursor-pointer group">
+                  <input type="checkbox" className="w-4 h-4 rounded border-gray-300 text-yellow-500 focus:ring-yellow-500" />
+                  <span className="text-xs text-gray-500 group-hover:text-gray-700 transition-colors">Remember this device</span>
+                </label>
+                <Link href="/admin/forgot-password" size="xs" className="text-xs font-bold text-yellow-600 hover:text-yellow-700">
+                  Forgot Password?
+                </Link>
+              </div>
 
               <button
-                type="button"
-                onClick={() => setStep(1)}
-                className="text-gray-400 text-xs font-bold hover:text-gray-600 transition-colors"
+                type="submit"
+                disabled={isLoading || isSuccess}
+                className={`w-full font-bold py-4 rounded-2xl transition-all shadow-xl flex items-center justify-center gap-3 ${
+                  isSuccess 
+                    ? "bg-green-600 text-white shadow-green-100" 
+                    : "bg-gray-900 hover:bg-gray-800 text-white shadow-gray-200"
+                } disabled:opacity-50`}
               >
-                Back to Login
+                {isLoading ? (
+                  <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                ) : isSuccess ? (
+                  <>
+                    <FaCheckCircle /> Access Granted
+                  </>
+                ) : (
+                  <>
+                    Verify Credentials
+                    <FaArrowRight size={14} />
+                  </>
+                )}
               </button>
-            </div>
-          )}
+            </form>
+          </div>
         </div>
       </div>
     </div>

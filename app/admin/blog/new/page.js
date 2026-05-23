@@ -11,7 +11,10 @@ import {
   FaInfoCircle,
   FaEye
 } from "react-icons/fa";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense } from "react";
+import { createClient } from "@/utils/supabase/client";
+import { useToast } from "@/context/ToastContext";
 
 // Import Quill styles
 import "react-quill-new/dist/quill.snow.css";
@@ -22,8 +25,11 @@ const ReactQuill = dynamic(() => import("react-quill-new"), {
   loading: () => <div className="h-72 w-full bg-gray-50 animate-pulse rounded-xl border border-gray-200" />
 });
 
-export default function NewBlogPost() {
+function NewBlogPostForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id");
+
   const [formData, setFormData] = useState({
     title: "",
     slug: "",
@@ -37,6 +43,50 @@ export default function NewBlogPost() {
 
   const [previewMode, setPreviewMode] = useState(false);
   const [isSlugEditable, setIsSlugEditable] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const supabase = createClient();
+  const { showToast } = useToast();
+
+  // Load existing post if editing
+  useEffect(() => {
+    if (id) {
+      async function loadPost() {
+        setIsLoading(true);
+        try {
+          const { data, error } = await supabase
+            .from("blog_posts")
+            .select("*")
+            .eq("id", id)
+            .maybeSingle();
+
+          if (error) {
+            console.error("Error loading blog post:", error);
+            return;
+          }
+
+          if (data) {
+            setFormData({
+              title: data.title || "",
+              slug: data.slug || "",
+              excerpt: data.excerpt || "",
+              content: data.content || "",
+              category: data.category || "Global Talent Visa",
+              image: data.image || "",
+              videoUrl: data.video_url || "",
+              tags: data.tags ? data.tags.join(", ") : ""
+            });
+            setIsSlugEditable(true); // Don't auto-regenerate slug for existing post
+          }
+        } catch (err) {
+          console.error("Error loading post:", err);
+        } finally {
+          setIsLoading(false);
+        }
+      }
+      loadPost();
+    }
+  }, [id]);
 
   // Auto-generate slug from title
   useEffect(() => {
@@ -74,16 +124,69 @@ export default function NewBlogPost() {
   const formats = [
     'header',
     'bold', 'italic', 'underline', 'strike', 'blockquote',
-    'list', 'bullet', 'indent',
+    'list', 'indent',
     'link', 'image'
   ];
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form Data:", formData);
-    alert("Post created successfully! (Simulated)");
-    router.push("/admin/blog");
+    setIsLoading(true);
+
+    const tagsArray = formData.tags
+      .split(",")
+      .map((tag) => tag.trim())
+      .filter((t) => t);
+
+    const postPayload = {
+      title: formData.title,
+      slug: formData.slug,
+      excerpt: formData.excerpt,
+      content: formData.content,
+      category: formData.category,
+      image: formData.image,
+      video_url: formData.videoUrl,
+      tags: tagsArray,
+      date: id ? undefined : new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })
+    };
+
+    try {
+      let error;
+      if (id) {
+        // Exclude date update for existing post so we keep creation date, or update it
+        const { error: updateError } = await supabase
+          .from("blog_posts")
+          .update(postPayload)
+          .eq("id", id);
+        error = updateError;
+      } else {
+        const { error: insertError } = await supabase
+          .from("blog_posts")
+          .insert([postPayload]);
+        error = insertError;
+      }
+
+      if (error) {
+        showToast("Error saving blog post: " + error.message, "error");
+        return;
+      }
+
+      showToast(id ? "Post updated successfully!" : "Post created successfully!", "success");
+      router.push("/admin/blog");
+    } catch (err) {
+      showToast("Failed to save post. Please try again.", "error");
+    } finally {
+      setIsLoading(false);
+    }
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-col items-center justify-center p-12 min-h-[400px]">
+        <div className="w-10 h-10 border-4 border-yellow-500/20 border-t-yellow-500 rounded-full animate-spin"></div>
+        <p className="text-xs text-gray-400 mt-4 font-bold uppercase tracking-widest">Loading Editor Content...</p>
+      </div>
+    );
+  }
 
   if (previewMode) {
     return (
@@ -304,7 +407,7 @@ export default function NewBlogPost() {
                   className="bg-white rounded-xl overflow-hidden border border-gray-200 focus-within:border-yellow-500 transition-all"
                 />
               </div>
-              <style jsx global>{`
+              <style dangerouslySetInnerHTML={{ __html: `
                 .quill-editor-wrapper .ql-toolbar {
                   border-top-left-radius: 0.75rem;
                   border-top-right-radius: 0.75rem;
@@ -321,7 +424,7 @@ export default function NewBlogPost() {
                 .quill-editor-wrapper .ql-editor {
                   min-height: 300px;
                 }
-              `}</style>
+              `}} />
             </div>
           </div>
         </div>
@@ -364,7 +467,7 @@ export default function NewBlogPost() {
                         if (file) {
                           // Check file size (300KB = 300 * 1024 bytes)
                           if (file.size > 300 * 1024) {
-                            alert("File size too large! Maximum allowed is 300KB.");
+                            showToast("File size too large! Maximum allowed is 300KB.", "warning");
                             e.target.value = ""; // Clear input
                             return;
                           }
@@ -440,5 +543,18 @@ export default function NewBlogPost() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function NewBlogPost() {
+  return (
+    <Suspense fallback={
+      <div className="flex flex-col items-center justify-center p-12 min-h-[400px]">
+        <div className="w-10 h-10 border-4 border-yellow-500/20 border-t-yellow-500 rounded-full animate-spin"></div>
+        <p className="text-xs text-gray-400 mt-4 font-bold uppercase tracking-widest">Loading Editor...</p>
+      </div>
+    }>
+      <NewBlogPostForm />
+    </Suspense>
   );
 }

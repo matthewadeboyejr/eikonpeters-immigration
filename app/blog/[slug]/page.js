@@ -1,39 +1,79 @@
 import React from "react";
-import { blogPosts } from "@/data/blogPosts";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { FaCalendarAlt, FaUser, FaChevronLeft, FaTag, FaTwitter, FaFacebookF, FaLinkedinIn } from "react-icons/fa";
+import { createClient } from "@/utils/supabase/server";
+import { createClient as createSimpleClient } from "@supabase/supabase-js";
 
 export async function generateStaticParams() {
-  return blogPosts.map((post) => ({
-    slug: post.slug,
-  }));
+  try {
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+      return [];
+    }
+    const supabase = createSimpleClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    );
+    const { data: posts } = await supabase
+      .from("blog_posts")
+      .select("slug");
+
+    return (posts || []).map((post) => ({
+      slug: post.slug,
+    }));
+  } catch (err) {
+    console.error("Error generating static params:", err);
+    return [];
+  }
 }
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
-  const post = blogPosts.find((p) => p.slug === slug);
-  
-  if (!post) return { title: "Post Not Found" };
+  try {
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+      return { title: "Eikon Immigration Blog" };
+    }
+    const supabase = createSimpleClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    );
+    const { data: post } = await supabase
+      .from("blog_posts")
+      .select("*")
+      .eq("slug", slug)
+      .maybeSingle();
 
-  return {
-    title: `${post.title} | Eikon Immigration Blog`,
-    description: post.excerpt,
-    openGraph: {
-      title: post.title,
+    if (!post) return { title: "Post Not Found" };
+
+    return {
+      title: `${post.title} | Eikon Immigration Blog`,
       description: post.excerpt,
-      images: [{ url: post.image }],
-    },
-  };
+      openGraph: {
+        title: post.title,
+        description: post.excerpt,
+        images: [{ url: post.image }],
+      },
+    };
+  } catch (err) {
+    return { title: "Eikon Immigration Blog" };
+  }
 }
 
 export default async function BlogPostPage({ params }) {
   const { slug } = await params;
-  const post = blogPosts.find((p) => p.slug === slug);
+  const supabase = await createClient();
+  
+  const { data: post, error } = await supabase
+    .from("blog_posts")
+    .select("*")
+    .eq("slug", slug)
+    .maybeSingle();
 
-  if (!post) {
+  if (error || !post) {
     notFound();
   }
+
+  const videoUrl = post.video_url || post.videoUrl;
 
   return (
     <main className="min-h-screen pt-32 pb-20 bg-white">
@@ -76,10 +116,10 @@ export default async function BlogPostPage({ params }) {
             </div>
           )}
           
-          {post.videoUrl && !post.content.includes("[[VIDEO]]") && (
+          {videoUrl && !post.content.includes("[[VIDEO]]") && (
             <div className="rounded-3xl overflow-hidden shadow-2xl aspect-video bg-black">
               <iframe
-                src={post.videoUrl}
+                src={videoUrl}
                 title={post.title}
                 className="w-full h-full"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -153,10 +193,10 @@ export default async function BlogPostPage({ params }) {
                 post.content.split("[[VIDEO]]").map((part, index, array) => (
                   <React.Fragment key={index}>
                     <div dangerouslySetInnerHTML={{ __html: part }} />
-                    {index < array.length - 1 && post.videoUrl && (
+                    {index < array.length - 1 && videoUrl && (
                       <div className="my-12 rounded-3xl overflow-hidden shadow-xl aspect-video bg-black">
                         <iframe
-                          src={post.videoUrl}
+                          src={videoUrl}
                           title={post.title}
                           className="w-full h-full"
                           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

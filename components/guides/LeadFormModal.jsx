@@ -1,31 +1,62 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaTimes, FaDownload, FaCheckCircle } from "react-icons/fa";
+import { createClient } from "@/utils/supabase/client";
+import { useToast } from "@/context/ToastContext";
 
 const LeadFormModal = ({ isOpen, onClose, guide }) => {
   const [formData, setFormData] = useState({ name: "", email: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
+  const supabase = createClient();
+  const { showToast } = useToast();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    
-    setIsSubmitting(false);
-    setIsSuccess(true);
-    
-    // In a real app, this would trigger the actual file download
-    console.log(`Downloading ${guide.title} for ${formData.name} (${formData.email})`);
-    
-    // Auto close after 3 seconds on success
-    setTimeout(() => {
-      onClose();
-      setIsSuccess(false);
-      setFormData({ name: "", email: "" });
-    }, 3000);
+    try {
+      const { error } = await supabase
+        .from("leads")
+        .insert([
+          {
+            name: formData.name,
+            email: formData.email,
+            guide: guide?.title || "Unknown Guide",
+            status: "New"
+          }
+        ]);
+
+      if (error) {
+        showToast("Submission failed: " + error.message, "error");
+        setIsSubmitting(false);
+        return;
+      }
+
+      // Trigger the actual file download
+      if (guide?.pdfUrl) {
+        const link = document.createElement("a");
+        link.href = guide.pdfUrl;
+        link.setAttribute("download", "");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+      
+      setIsSubmitting(false);
+      setIsSuccess(true);
+      
+      // Auto close after 3 seconds on success
+      setTimeout(() => {
+        onClose();
+        setIsSuccess(false);
+        setFormData({ name: "", email: "" });
+      }, 3000);
+    } catch (err) {
+      showToast("An error occurred during submission.", "error");
+      setIsSubmitting(false);
+    }
   };
 
   return (

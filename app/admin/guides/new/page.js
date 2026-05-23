@@ -10,10 +10,16 @@ import {
   FaInfoCircle,
   FaEye
 } from "react-icons/fa";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense, useEffect } from "react";
+import { createClient } from "@/utils/supabase/client";
+import { useToast } from "@/context/ToastContext";
 
-export default function NewGuidePage() {
+function NewGuideForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id");
+
   const [formData, setFormData] = useState({
     title: "",
     excerpt: "",
@@ -26,18 +32,107 @@ export default function NewGuidePage() {
   });
 
   const [previewMode, setPreviewMode] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const supabase = createClient();
+  const { showToast } = useToast();
+
+  // Load existing guide if editing
+  useEffect(() => {
+    if (id) {
+      async function loadGuide() {
+        setIsLoading(true);
+        try {
+          const { data, error } = await supabase
+            .from("guides")
+            .select("*")
+            .eq("id", id)
+            .maybeSingle();
+
+          if (error) {
+            console.error("Error loading guide:", error);
+            return;
+          }
+
+          if (data) {
+            setFormData({
+              title: data.title || "",
+              excerpt: data.excerpt || "",
+              category: data.category || "Visas",
+              image: data.image || "",
+              fileUrl: data.file_url || "",
+              pages: data.pages || "",
+              fileSize: data.file_size || "",
+              buttonText: data.button_text || "Download Free Guide"
+            });
+          }
+        } catch (err) {
+          console.error("Error loading guide:", err);
+        } finally {
+          setIsLoading(false);
+        }
+      }
+      loadGuide();
+    }
+  }, [id]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Guide Data:", formData);
-    alert("Guide created successfully! (Simulated)");
-    router.push("/admin/guides");
+    setIsLoading(true);
+
+    const guidePayload = {
+      title: formData.title,
+      excerpt: formData.excerpt,
+      category: formData.category,
+      image: formData.image,
+      file_url: formData.fileUrl,
+      pages: formData.pages ? parseInt(formData.pages, 10) : 0,
+      file_size: formData.fileSize || "0MB",
+      button_text: formData.buttonText || "Download Free Guide"
+    };
+
+    try {
+      let error;
+      if (id) {
+        const { error: updateError } = await supabase
+          .from("guides")
+          .update(guidePayload)
+          .eq("id", id);
+        error = updateError;
+      } else {
+        const { error: insertError } = await supabase
+          .from("guides")
+          .insert([guidePayload]);
+        error = insertError;
+      }
+
+      if (error) {
+        showToast("Error saving guide: " + error.message, "error");
+        return;
+      }
+
+      showToast(id ? "Guide updated successfully!" : "Guide created successfully!", "success");
+      router.push("/admin/guides");
+    } catch (err) {
+      showToast("Failed to save guide. Please try again.", "error");
+    } finally {
+      setIsLoading(false);
+    }
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-col items-center justify-center p-12 min-h-[400px]">
+        <div className="w-10 h-10 border-4 border-yellow-500/20 border-t-yellow-500 rounded-full animate-spin"></div>
+        <p className="text-xs text-gray-400 mt-4 font-bold uppercase tracking-widest">Loading Editor Content...</p>
+      </div>
+    );
+  }
 
   if (previewMode) {
     return (
@@ -263,7 +358,7 @@ export default function NewGuidePage() {
                         const file = e.target.files[0];
                         if (file) {
                           if (file.size > 500 * 1024) {
-                            alert("File size too large! Max 500KB.");
+                            showToast("File size too large! Max 500KB.", "warning");
                             return;
                           }
                           const reader = new FileReader();
@@ -298,5 +393,18 @@ export default function NewGuidePage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function NewGuidePage() {
+  return (
+    <Suspense fallback={
+      <div className="flex flex-col items-center justify-center p-12 min-h-[400px]">
+        <div className="w-10 h-10 border-4 border-yellow-500/20 border-t-yellow-500 rounded-full animate-spin"></div>
+        <p className="text-xs text-gray-400 mt-4 font-bold uppercase tracking-widest">Loading Editor...</p>
+      </div>
+    }>
+      <NewGuideForm />
+    </Suspense>
   );
 }

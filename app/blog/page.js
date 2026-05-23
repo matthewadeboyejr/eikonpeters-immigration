@@ -1,48 +1,83 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
-import { blogPosts } from "@/data/blogPosts";
+import React, { useState, useMemo, useEffect } from "react";
 import BlogList from "@/components/blog/BlogList";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaSearch, FaFilter, FaFire, FaClock, FaStar, FaChevronRight } from "react-icons/fa";
 import Link from "next/link";
+import { createClient } from "@/utils/supabase/client";
 
 export default function BlogPage() {
+  const [blogPosts, setBlogPosts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedTag, setSelectedTag] = useState("All");
   const [activeTab, setActiveTab] = useState("Latest"); // Latest, Popular, Featured
+  const [isLoading, setIsLoading] = useState(true);
 
-  const categories = useMemo(() => ["All", ...new Set(blogPosts.map((post) => post.category))], []);
-  const allTags = useMemo(() => ["All", ...new Set(blogPosts.flatMap((post) => post.tags))], []);
+  const supabase = createClient();
 
-  const featuredPost = useMemo(() => blogPosts.find(post => post.isFeatured), []);
+  useEffect(() => {
+    async function fetchPosts() {
+      try {
+        const { data, error } = await supabase
+          .from("blog_posts")
+          .select("*")
+          .order("id", { ascending: false });
+
+        if (error) {
+          console.error("Error loading blog posts:", error);
+          return;
+        }
+
+        if (data) {
+          setBlogPosts(data);
+        }
+      } catch (err) {
+        console.error("Error fetching blog posts:", err);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchPosts();
+  }, []);
+
+  const categories = useMemo(() => {
+    return ["All", ...new Set(blogPosts.map((post) => post.category))];
+  }, [blogPosts]);
+
+  const allTags = useMemo(() => {
+    return ["All", ...new Set(blogPosts.flatMap((post) => post.tags))];
+  }, [blogPosts]);
+
+  const featuredPost = useMemo(() => {
+    return blogPosts.find(post => post.is_featured || post.isFeatured);
+  }, [blogPosts]);
 
   const filteredPosts = useMemo(() => {
     return blogPosts.filter((post) => {
       const searchLower = searchTerm.toLowerCase();
       const matchesSearch = 
         post.title.toLowerCase().includes(searchLower) || 
-        post.excerpt.toLowerCase().includes(searchLower) ||
+        (post.excerpt && post.excerpt.toLowerCase().includes(searchLower)) ||
         post.category.toLowerCase().includes(searchLower) ||
-        post.tags.some(tag => tag.toLowerCase().includes(searchLower));
+        (post.tags && post.tags.some(tag => tag.toLowerCase().includes(searchLower)));
 
       const matchesCategory = selectedCategory === "All" || post.category === selectedCategory;
-      const matchesTag = selectedTag === "All" || post.tags.includes(selectedTag);
+      const matchesTag = selectedTag === "All" || (post.tags && post.tags.includes(selectedTag));
 
       let matchesTab = true;
-      if (activeTab === "Featured") matchesTab = post.isFeatured;
-      if (activeTab === "Popular") matchesTab = post.isPopular;
-      // "Latest" is the default view, no specific flag but sorted by date
+      if (activeTab === "Featured") matchesTab = post.is_featured || post.isFeatured;
+      if (activeTab === "Popular") matchesTab = post.is_popular || post.isPopular;
 
       return matchesSearch && matchesCategory && matchesTag && matchesTab;
     }).sort((a, b) => {
       if (activeTab === "Latest") {
-        return new Date(b.date) - new Date(a.date);
+        return new Date(b.created_at || b.date) - new Date(a.created_at || a.date);
       }
       return 0;
     });
-  }, [searchTerm, selectedCategory, selectedTag, activeTab]);
+  }, [searchTerm, selectedCategory, selectedTag, activeTab, blogPosts]);
 
   return (
     <main className="min-h-screen pt-32 pb-20 bg-gray-50/50">
@@ -206,7 +241,14 @@ export default function BlogPage() {
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3 }}
             >
-              <BlogList posts={filteredPosts} />
+              {isLoading ? (
+                <div className="flex flex-col items-center justify-center py-20">
+                  <div className="w-10 h-10 border-4 border-yellow-500/20 border-t-yellow-500 rounded-full animate-spin"></div>
+                  <p className="text-xs text-gray-400 mt-4 font-bold uppercase tracking-widest animate-pulse">Fetching Articles...</p>
+                </div>
+              ) : (
+                <BlogList posts={filteredPosts} />
+              )}
             </motion.div>
           </AnimatePresence>
         </div>

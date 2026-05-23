@@ -11,18 +11,23 @@ import {
   FaChartLine, 
   FaSignOutAlt,
   FaHome,
-  FaUser
+  FaUser,
+  FaUserShield
 } from "react-icons/fa";
 import Image from "next/image";
+import { createClient } from "@/utils/supabase/client";
 
 const AdminSidebar = () => {
   const pathname = usePathname();
+
+  const supabase = createClient();
 
   const menuItems = [
     { name: "Overview", icon: <FaThLarge />, path: "/admin" },
     { name: "Blog Posts", icon: <FaFileAlt />, path: "/admin/blog" },
     { name: "Guides & PDFs", icon: <FaBookOpen />, path: "/admin/guides" },
     { name: "Leads", icon: <FaUsers />, path: "/admin/leads" },
+    { name: "Admins", icon: <FaUserShield />, path: "/admin/admins" },
     { name: "Analytics", icon: <FaChartLine />, path: "/admin/analytics" },
     { name: "Profile", icon: <FaUser />, path: "/admin/profile" },
   ];
@@ -44,7 +49,7 @@ const AdminSidebar = () => {
       </div>
 
       {/* Menu Items */}
-      <nav className="flex-grow p-4 space-y-2 mt-4">
+      <nav id="sidebar-nav" className="flex-grow p-4 space-y-2 mt-4">
         {menuItems.map((item) => {
           const isActive = pathname === item.path;
           return (
@@ -74,7 +79,8 @@ const AdminSidebar = () => {
           <span className="text-sm font-medium">Back to Website</span>
         </Link>
         <button 
-          onClick={() => {
+          onClick={async () => {
+            await supabase.auth.signOut();
             localStorage.removeItem("admin_logged_in");
             window.location.href = "/admin/login";
           }}

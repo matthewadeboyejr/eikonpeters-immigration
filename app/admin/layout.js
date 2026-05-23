@@ -1,15 +1,20 @@
 "use client";
 
 import AdminSidebar from "@/components/admin/AdminSidebar";
+import DashboardTour from "@/components/admin/DashboardTour";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState, useMemo } from "react";
+import { createClient } from "@/utils/supabase/client";
 
 export default function AdminLayout({ children }) {
   const pathname = usePathname();
   const router = useRouter();
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [adminProfile, setAdminProfile] = useState(null);
+
+  const supabase = createClient();
 
   const isAuthPage = useMemo(() => {
     return pathname?.includes("/admin/login") || pathname?.includes("/admin/forgot-password");
@@ -23,22 +28,34 @@ export default function AdminLayout({ children }) {
       return;
     }
 
-    // Check mock session
-    const checkAuth = () => {
+    const checkAuth = async () => {
       try {
-        const isLoggedIn = localStorage.getItem("admin_logged_in") === "true";
-        if (isLoggedIn) {
-          setIsAuthorized(true);
-          setIsLoading(false);
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+          const { data: admin } = await supabase
+            .from("admins")
+            .select("name, email, role")
+            .eq("id", user.id)
+            .maybeSingle();
+
+          if (admin) {
+            setAdminProfile(admin);
+            setIsAuthorized(true);
+          } else {
+            // Logged in but not an admin
+            await supabase.auth.signOut();
+            setIsAuthorized(false);
+            router.push("/admin/login");
+          }
         } else {
           setIsAuthorized(false);
-          setIsLoading(false);
           router.push("/admin/login");
         }
       } catch (e) {
         setIsAuthorized(false);
-        setIsLoading(false);
         router.push("/admin/login");
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -68,13 +85,16 @@ export default function AdminLayout({ children }) {
       <AdminSidebar />
       <div className="flex-grow ml-64 min-h-screen">
         <header className="h-16 bg-white border-b border-gray-200 sticky top-0 z-40 flex items-center justify-between px-8">
-          <h2 className="text-sm font-medium text-gray-500">Welcome back, Admin</h2>
-          <Link href="/admin/profile" className="flex items-center gap-4 group">
-            <span className="text-xs font-bold text-gray-400 group-hover:text-yellow-600 transition-colors">Admin Profile</span>
-            <div className="w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-700 font-bold text-xs group-hover:bg-yellow-500 group-hover:text-white transition-all">
-              AD
-            </div>
-          </Link>
+          <h2 className="text-sm font-medium text-gray-500">Welcome back, {adminProfile?.name || "Admin"}</h2>
+          <div className="flex items-center gap-6">
+            <DashboardTour />
+            <Link id="header-profile" href="/admin/profile" className="flex items-center gap-4 group">
+              <span className="text-xs font-bold text-gray-400 group-hover:text-yellow-600 transition-colors">Admin Profile</span>
+              <div className="w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-700 font-bold text-xs group-hover:bg-yellow-500 group-hover:text-white transition-all">
+                {adminProfile?.name ? adminProfile.name.split(' ').map(n => n[0]).join('') : "AD"}
+              </div>
+            </Link>
+          </div>
         </header>
         <main className="p-8">
           {children}
