@@ -166,7 +166,11 @@ function NewBlogPostForm() {
       }
 
       if (error) {
-        showToast("Error saving blog post: " + error.message, "error");
+        if (error.code === "23505") {
+          showToast("A blog post with this title/slug already exists!", "error");
+        } else {
+          showToast("Error saving blog post: " + error.message, "error");
+        }
         return;
       }
 

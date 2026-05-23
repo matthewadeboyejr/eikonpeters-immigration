@@ -34,7 +34,7 @@ export async function updateSession(request) {
 
   const url = request.nextUrl.clone();
   const isAdminPath = url.pathname.startsWith('/admin');
-  const isAuthPage = url.pathname.includes('/admin/login') || url.pathname.includes('/admin/forgot-password');
+  const isAuthPage = url.pathname.includes('/admin/login') || url.pathname.includes('/admin/forgot-password') || url.pathname.includes('/admin/signup');
 
   if (isAdminPath && !isAuthPage) {
     if (!user) {

@@ -74,7 +74,11 @@ export default function AdminManagement() {
         .insert([{ email: emailTrimmed, role: newRole }]);
 
       if (error) {
-        showToast("Failed to approve email: " + error.message, "error");
+        if (error.code === "23505") {
+          showToast(`The email "${emailTrimmed}" is already pre-approved!`, "error");
+        } else {
+          showToast("Failed to approve email: " + error.message, "error");
+        }
         return;
       }
 

@@ -17,7 +17,7 @@ export default function AdminLayout({ children }) {
   const supabase = createClient();
 
   const isAuthPage = useMemo(() => {
-    return pathname?.includes("/admin/login") || pathname?.includes("/admin/forgot-password");
+    return pathname?.includes("/admin/login") || pathname?.includes("/admin/forgot-password") || pathname?.includes("/admin/signup");
   }, [pathname]);
 
   useEffect(() => {

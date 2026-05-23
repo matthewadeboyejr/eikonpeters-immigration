@@ -112,7 +112,11 @@ function NewGuideForm() {
       }
 
       if (error) {
-        showToast("Error saving guide: " + error.message, "error");
+        if (error.code === "23505") {
+          showToast("A guide with this title already exists!", "error");
+        } else {
+          showToast("Error saving guide: " + error.message, "error");
+        }
         return;
       }
 

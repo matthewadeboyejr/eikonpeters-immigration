@@ -11,33 +11,69 @@ import {
   FaShieldAlt,
   FaFingerprint,
   FaArrowRight,
-  FaCheckCircle
+  FaCheckCircle,
+  FaUser
 } from "react-icons/fa";
 import { createClient } from "@/utils/supabase/client";
 
-export default function AdminLogin() {
-  const [mounted, setMounted] = useState(false);
-  const [formData, setFormData] = useState({ email: "", password: "" });
+export default function AdminSignup() {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: ""
+  });
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
 
   const supabase = createClient();
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  const handleLoginSubmit = async (e) => {
+  const handleSignupSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     setErrorMsg("");
+    setSuccessMsg("");
+
+    if (formData.password !== formData.confirmPassword) {
+      setErrorMsg("Passwords do not match!");
+      setIsLoading(false);
+      return;
+    }
+
+    if (formData.password.length < 6) {
+      setErrorMsg("Password must be at least 6 characters long.");
+      setIsLoading(false);
+      return;
+    }
 
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email: formData.email,
+      const emailTrimmed = formData.email.toLowerCase().trim();
+
+      // ── Step 1: Check whitelist BEFORE creating any Supabase account ──
+      const { data: isApproved, error: checkError } = await supabase.rpc(
+        "is_email_approved",
+        { input_email: emailTrimmed }
+      );
+
+      if (checkError || !isApproved) {
+        setErrorMsg("Unauthorized: Your email address has not been pre-approved by a Super Admin. Contact your administrator to request access.");
+        setIsLoading(false);
+        return;
+      }
+
+      // ── Step 2: Email is whitelisted — proceed with registration ──
+      const { data, error } = await supabase.auth.signUp({
+        email: emailTrimmed,
         password: formData.password,
+        options: {
+          data: {
+            name: formData.name
+          }
+        }
       });
 
       if (error) {
@@ -46,25 +82,20 @@ export default function AdminLogin() {
         return;
       }
 
-      // Check if user is in admins table
-      const { data: admin, error: adminError } = await supabase
-        .from("admins")
-        .select("id")
-        .eq("id", data.user.id)
-        .maybeSingle();
+      const user = data?.user;
 
-      if (adminError || !admin) {
-        await supabase.auth.signOut();
-        setErrorMsg("Unauthorized: You do not have administrator privileges.");
+      if (user && data?.session) {
+        // Email confirmation is disabled — user is immediately logged in
         setIsLoading(false);
-        return;
+        setIsSuccess(true);
+        setTimeout(() => {
+          window.location.href = "/admin";
+        }, 1000);
+      } else {
+        // Email confirmation is enabled — user must click the confirmation link
+        setIsLoading(false);
+        setSuccessMsg("Registration submitted! Please check your email for a confirmation link to activate your account.");
       }
-
-      setIsLoading(false);
-      setIsSuccess(true);
-      setTimeout(() => {
-        window.location.href = "/admin"; // Redirect to dashboard
-      }, 1000);
     } catch (err) {
       setErrorMsg("An unexpected error occurred. Please try again.");
       setIsLoading(false);
@@ -121,25 +152,40 @@ export default function AdminLogin() {
           </div>
         </div>
 
-        {/* Right Side: Login Form */}
+        {/* Right Side: Signup Form */}
         <div className="p-12 lg:p-20 flex flex-col justify-center">
           <div className="space-y-8">
             <div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-2">Welcome Back</h2>
-              <p className="text-gray-500 text-sm">Please enter your administrative credentials.</p>
+              <h2 className="text-3xl font-bold text-gray-900 mb-2">Create Admin Account</h2>
+              <p className="text-gray-500 text-sm">Please register using your pre-approved email address.</p>
             </div>
 
-            <form onSubmit={handleLoginSubmit} className="space-y-6">
-              <div className="space-y-4">
+            <form onSubmit={handleSignupSubmit} className="space-y-4">
+              <div className="space-y-3">
                 <div>
-                  <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 ml-1">Email Address</label>
+                  <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-1.5 ml-1">Full Name</label>
+                  <div className="relative group">
+                    <FaUser className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-yellow-500 transition-colors" />
+                    <input
+                      type="text"
+                      required
+                      placeholder="e.g. John Doe"
+                      className="w-full pl-12 pr-4 py-3.5 rounded-2xl border border-gray-100 bg-gray-50 focus:bg-white focus:border-yellow-500 focus:ring-4 focus:ring-yellow-500/5 outline-none transition-all"
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-1.5 ml-1">Email Address</label>
                   <div className="relative group">
                     <FaEnvelope className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-yellow-500 transition-colors" />
                     <input
                       type="email"
                       required
-                      placeholder="admin@eikonpeters.com"
-                      className="w-full pl-12 pr-4 py-4 rounded-2xl border border-gray-100 bg-gray-50 focus:bg-white focus:border-yellow-500 focus:ring-4 focus:ring-yellow-500/5 outline-none transition-all"
+                      placeholder="colleague@eikonpeters.com"
+                      className="w-full pl-12 pr-4 py-3.5 rounded-2xl border border-gray-100 bg-gray-50 focus:bg-white focus:border-yellow-500 focus:ring-4 focus:ring-yellow-500/5 outline-none transition-all"
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     />
@@ -147,14 +193,14 @@ export default function AdminLogin() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 ml-1">Security Password</label>
+                  <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-1.5 ml-1">Security Password</label>
                   <div className="relative group">
                     <FaLock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-yellow-500 transition-colors" />
                     <input
                       type={showPassword ? "text" : "password"}
                       required
                       placeholder="••••••••••••"
-                      className="w-full pl-12 pr-12 py-4 rounded-2xl border border-gray-100 bg-gray-50 focus:bg-white focus:border-yellow-500 focus:ring-4 focus:ring-yellow-500/5 outline-none transition-all"
+                      className="w-full pl-12 pr-12 py-3.5 rounded-2xl border border-gray-100 bg-gray-50 focus:bg-white focus:border-yellow-500 focus:ring-4 focus:ring-yellow-500/5 outline-none transition-all"
                       value={formData.password}
                       onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                     />
@@ -167,6 +213,28 @@ export default function AdminLogin() {
                     </button>
                   </div>
                 </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-1.5 ml-1">Confirm Password</label>
+                  <div className="relative group">
+                    <FaLock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-yellow-500 transition-colors" />
+                    <input
+                      type={showConfirmPassword ? "text" : "password"}
+                      required
+                      placeholder="••••••••••••"
+                      className="w-full pl-12 pr-12 py-3.5 rounded-2xl border border-gray-100 bg-gray-50 focus:bg-white focus:border-yellow-500 focus:ring-4 focus:ring-yellow-500/5 outline-none transition-all"
+                      value={formData.confirmPassword}
+                      onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    >
+                      {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                    </button>
+                  </div>
+                </div>
               </div>
 
               {errorMsg && (
@@ -175,15 +243,11 @@ export default function AdminLogin() {
                 </div>
               )}
 
-              <div className="flex items-center justify-between">
-                <label className="flex items-center gap-2 cursor-pointer group">
-                  <input type="checkbox" className="w-4 h-4 rounded border-gray-300 text-yellow-500 focus:ring-yellow-500" />
-                  <span className="text-xs text-gray-500 group-hover:text-gray-700 transition-colors">Remember this device</span>
-                </label>
-                <Link href="/admin/forgot-password" size="xs" className="text-xs font-bold text-yellow-600 hover:text-yellow-700">
-                  Forgot Password?
-                </Link>
-              </div>
+              {successMsg && (
+                <div className="p-3 bg-green-50 border border-green-100 rounded-xl">
+                  <p className="text-xs text-green-700 font-semibold">{successMsg}</p>
+                </div>
+              )}
 
               <button
                 type="submit"
@@ -192,30 +256,32 @@ export default function AdminLogin() {
                   isSuccess 
                     ? "bg-green-600 text-white shadow-green-100" 
                     : "bg-gray-900 hover:bg-gray-800 text-white shadow-gray-200"
-                } disabled:opacity-50`}
+                } disabled:opacity-50 mt-4`}
               >
                 {isLoading ? (
                   <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
                 ) : isSuccess ? (
                   <>
-                    <FaCheckCircle /> Access Granted
+                    <FaCheckCircle /> Account Created! Redirecting...
                   </>
                 ) : (
                   <>
-                    Verify Credentials
+                    Create Admin Account
                     <FaArrowRight size={14} />
                   </>
                 )}
               </button>
             </form>
+
             <div className="text-center mt-6">
-              <span className="text-xs text-gray-500">Need to register a whitelisted account?</span>{" "}
-              <Link href="/admin/signup" className="text-xs font-bold text-yellow-600 hover:text-yellow-700 transition-colors">
-                Sign Up
+              <span className="text-xs text-gray-500">Already registered?</span>{" "}
+              <Link href="/admin/login" className="text-xs font-bold text-yellow-600 hover:text-yellow-700 transition-colors">
+                Log In
               </Link>
             </div>
           </div>
         </div>
+
       </div>
     </div>
   );
