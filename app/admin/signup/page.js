@@ -70,6 +70,9 @@ export default function AdminSignup() {
         email: emailTrimmed,
         password: formData.password,
         options: {
+          // Dynamically set the redirect URL so it always uses the current domain
+          // (localhost in dev, production URL in production)
+          emailRedirectTo: `${window.location.origin}/admin/login`,
           data: {
             name: formData.name
           }
