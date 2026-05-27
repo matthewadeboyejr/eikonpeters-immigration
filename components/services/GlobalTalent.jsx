@@ -23,13 +23,13 @@ const GlobalTalent = () => {
         <motion.div variants={fadeInUp} className="space-y-8">
           <div className="space-y-2 mb-4">
             <p className="text-sm tracking-wide text-yellow-500">BESTSELLING</p>
-            <h2 className="h2 text-4xl font-bold leading-snug text-white">
+            <h1 className="h2 text-4xl font-bold leading-snug text-white font-semibold">
               🌍 UK Global <br />
               Global{" "}
               <span className="text-yellow-500 font-extrabold">
                 Talent Visa
               </span>
-            </h2>
+            </h1>
             <div className="w-16 h-1 bg-yellow-500"></div>
           </div>
 
