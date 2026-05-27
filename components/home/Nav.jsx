@@ -28,8 +28,6 @@ const Nav = () => {
   const mobileMenuRef = useRef(null);
   const searchRef = useRef(null);
 
-  if (isAdminPage) return null;
-
   // Navigation items with dropdowns
   const navItems = [
     { name: "Home", path: "/" },
@@ -95,6 +93,8 @@ const Nav = () => {
       }, 100);
     }
   };
+
+  if (isAdminPage) return null;
 
   return (
     <>

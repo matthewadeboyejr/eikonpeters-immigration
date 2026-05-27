@@ -48,6 +48,42 @@ export default function AdminLeadsManagement() {
     loadLeads();
   }, []);
 
+  const handleExport = () => {
+    if (filteredLeads.length === 0) {
+      showToast("No leads to export!", "warning");
+      return;
+    }
+
+    // Define the CSV headers
+    const headers = ["ID", "Name", "Email", "Downloaded Guide", "Status", "Date Captured"];
+    
+    // Map the leads to rows, escape strings to prevent breakages
+    const csvRows = filteredLeads.map(lead => [
+      lead.id,
+      `"${(lead.name || "").replace(/"/g, '""')}"`,
+      `"${(lead.email || "").replace(/"/g, '""')}"`,
+      `"${(lead.guide || "").replace(/"/g, '""')}"`,
+      `"${(lead.status || "").replace(/"/g, '""')}"`,
+      `"${new Date(lead.created_at || new Date()).toLocaleString()}"`
+    ]);
+
+    // Combine headers and rows
+    const csvContent = [headers.join(","), ...csvRows.map(e => e.join(","))].join("\n");
+
+    // Create a blob and trigger a download link
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", `eikon_leads_${new Date().toISOString().split('T')[0]}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    showToast("Leads exported successfully!", "success");
+  };
+
   const [deleteModal, setDeleteModal] = useState({ isOpen: false, id: null });
 
   const confirmDelete = async () => {
@@ -95,6 +131,7 @@ export default function AdminLeadsManagement() {
         </div>
         <button 
           id="leads-export-btn"
+          onClick={handleExport}
           className="inline-flex items-center gap-2 bg-gray-900 text-white font-bold px-6 py-3 rounded-xl transition-all shadow-lg hover:bg-gray-800"
         >
           <FaDownload />

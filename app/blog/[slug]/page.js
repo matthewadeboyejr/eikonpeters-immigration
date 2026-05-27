@@ -73,7 +73,16 @@ export default async function BlogPostPage({ params }) {
     notFound();
   }
 
-  const videoUrl = post.video_url || post.videoUrl;
+  const rawVideoUrl = post.video_url || post.videoUrl;
+  const videoUrl = (() => {
+    if (!rawVideoUrl) return "";
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    const match = rawVideoUrl.match(regExp);
+    return match && match[2].length === 11 ? `https://www.youtube.com/embed/${match[2]}` : rawVideoUrl;
+  })();
+  const cleanContent = (post.content || "")
+    .replace(/&nbsp;/g, " ")
+    .replace(/\u00a0/g, " ");
 
   return (
     <main className="min-h-screen pt-32 pb-20 bg-white">
@@ -116,7 +125,7 @@ export default async function BlogPostPage({ params }) {
             </div>
           )}
           
-          {videoUrl && !post.content.includes("[[VIDEO]]") && (
+          {videoUrl && !cleanContent.includes("[[VIDEO]]") && (
             <div className="rounded-3xl overflow-hidden shadow-2xl aspect-video bg-black">
               <iframe
                 src={videoUrl}
@@ -189,8 +198,8 @@ export default async function BlogPostPage({ params }) {
           <div className="lg:col-span-9 lg:max-w-3xl">
             {/* Content Rendering with Video Placement Support */}
             <div className="prose prose-lg prose-yellow max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-p:leading-relaxed prose-li:text-gray-700 prose-strong:text-gray-900 prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-6">
-              {post.content.includes("[[VIDEO]]") ? (
-                post.content.split("[[VIDEO]]").map((part, index, array) => (
+              {cleanContent.includes("[[VIDEO]]") ? (
+                cleanContent.split("[[VIDEO]]").map((part, index, array) => (
                   <React.Fragment key={index}>
                     <div dangerouslySetInnerHTML={{ __html: part }} />
                     {index < array.length - 1 && videoUrl && (
@@ -207,7 +216,7 @@ export default async function BlogPostPage({ params }) {
                   </React.Fragment>
                 ))
               ) : (
-                <div dangerouslySetInnerHTML={{ __html: post.content }} />
+                <div dangerouslySetInnerHTML={{ __html: cleanContent }} />
               )}
             </div>
             

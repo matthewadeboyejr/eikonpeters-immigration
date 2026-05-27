@@ -25,6 +25,13 @@ const ReactQuill = dynamic(() => import("react-quill-new"), {
   loading: () => <div className="h-72 w-full bg-gray-50 animate-pulse rounded-xl border border-gray-200" />
 });
 
+function getEmbedUrl(url) {
+  if (!url) return "";
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+  const match = url.match(regExp);
+  return match && match[2].length === 11 ? `https://www.youtube.com/embed/${match[2]}` : url;
+}
+
 function NewBlogPostForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -44,9 +51,20 @@ function NewBlogPostForm() {
   const [previewMode, setPreviewMode] = useState(false);
   const [isSlugEditable, setIsSlugEditable] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [blogCategories, setBlogCategories] = useState([]);
 
   const supabase = createClient();
   const { showToast } = useToast();
+
+  // Load blog categories
+  useEffect(() => {
+    supabase
+      .from("categories")
+      .select("name")
+      .eq("type", "blog")
+      .order("name")
+      .then(({ data }) => setBlogCategories(data?.map((c) => c.name) || []));
+  }, []);
 
   // Load existing post if editing
   useEffect(() => {
@@ -137,14 +155,16 @@ function NewBlogPostForm() {
       .map((tag) => tag.trim())
       .filter((t) => t);
 
+    const cleanContent = formData.content.replace(/&nbsp;/g, " ").replace(/\u00a0/g, " ");
+
     const postPayload = {
       title: formData.title,
       slug: formData.slug,
       excerpt: formData.excerpt,
-      content: formData.content,
+      content: cleanContent,
       category: formData.category,
       image: formData.image,
-      video_url: formData.videoUrl,
+      video_url: getEmbedUrl(formData.videoUrl),
       tags: tagsArray,
       date: id ? undefined : new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })
     };
@@ -240,35 +260,41 @@ function NewBlogPostForm() {
 
             {/* Main Content Render */}
             <div className="prose prose-lg prose-yellow max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-li:text-gray-700">
-               {formData.content.includes("[[VIDEO]]") ? (
-                formData.content.split("[[VIDEO]]").map((part, index, array) => (
-                  <React.Fragment key={index}>
-                    <div dangerouslySetInnerHTML={{ __html: part }} />
-                    {index < array.length - 1 && formData.videoUrl && (
-                      <div className="my-12 rounded-2xl overflow-hidden shadow-xl aspect-video bg-black">
-                        <iframe
-                          src={formData.videoUrl}
-                          className="w-full h-full"
-                          allowFullScreen
-                        ></iframe>
-                      </div>
-                    )}
-                  </React.Fragment>
-                ))
-              ) : (
-                <div dangerouslySetInnerHTML={{ __html: formData.content }} />
-              )}
-
-              {/* Show video at bottom if not using [[VIDEO]] tag */}
-              {!formData.content.includes("[[VIDEO]]") && formData.videoUrl && (
-                <div className="mt-12 rounded-2xl overflow-hidden shadow-xl aspect-video bg-black">
-                  <iframe
-                    src={formData.videoUrl}
-                    className="w-full h-full"
-                    allowFullScreen
-                  ></iframe>
-                </div>
-              )}
+               {(() => {
+                 const cleanPreviewContent = (formData.content || "")
+                   .replace(/&nbsp;/g, " ")
+                   .replace(/\u00a0/g, " ");
+                 return cleanPreviewContent.includes("[[VIDEO]]") ? (
+                   cleanPreviewContent.split("[[VIDEO]]").map((part, index, array) => (
+                     <React.Fragment key={index}>
+                       <div dangerouslySetInnerHTML={{ __html: part }} />
+                       {index < array.length - 1 && formData.videoUrl && (
+                         <div className="my-12 rounded-2xl overflow-hidden shadow-xl aspect-video bg-black">
+                           <iframe
+                             src={getEmbedUrl(formData.videoUrl)}
+                             className="w-full h-full"
+                             allowFullScreen
+                           ></iframe>
+                         </div>
+                       )}
+                     </React.Fragment>
+                   ))
+                 ) : (
+                   <>
+                     <div dangerouslySetInnerHTML={{ __html: cleanPreviewContent }} />
+                     {/* Show video at bottom if not using [[VIDEO]] tag */}
+                     {!cleanPreviewContent.includes("[[VIDEO]]") && formData.videoUrl && (
+                       <div className="mt-12 rounded-2xl overflow-hidden shadow-xl aspect-video bg-black">
+                         <iframe
+                           src={getEmbedUrl(formData.videoUrl)}
+                           className="w-full h-full"
+                           allowFullScreen
+                         ></iframe>
+                       </div>
+                     )}
+                   </>
+                 );
+               })()}
             </div>
 
             {/* Tags Preview */}
@@ -369,13 +395,22 @@ function NewBlogPostForm() {
                   value={formData.category}
                   onChange={handleChange}
                 >
-                  <option>Global Talent Visa</option>
-                  <option>Student Visa</option>
-                  <option>Express Entry</option>
-                  <option>Work Visa</option>
-                  <option>Digital Nomad Visa</option>
-                  <option>Immigration Policy</option>
-                  <option>Lifestyle</option>
+                  {blogCategories.length > 0 ? (
+                    blogCategories.map((cat) => (
+                      <option key={cat} value={cat}>{cat}</option>
+                    ))
+                  ) : (
+                    /* Fallback while loading or if table is empty */
+                    <>
+                      <option>Global Talent Visa</option>
+                      <option>Student Visa</option>
+                      <option>Express Entry</option>
+                      <option>Work Visa</option>
+                      <option>Digital Nomad Visa</option>
+                      <option>Immigration Policy</option>
+                      <option>Lifestyle</option>
+                    </>
+                  )}
                 </select>
               </div>
             </div>

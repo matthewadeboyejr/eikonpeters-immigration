@@ -38,7 +38,14 @@ const LeadFormModal = ({ isOpen, onClose, guide }) => {
       if (guide?.pdfUrl) {
         const link = document.createElement("a");
         link.href = guide.pdfUrl;
-        link.setAttribute("download", "");
+        
+        // Generate a clean filename from the guide title
+        const safeName = (guide.title || "guide")
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/(^-|-$)/g, "");
+        link.download = `${safeName}.pdf`;
+
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);

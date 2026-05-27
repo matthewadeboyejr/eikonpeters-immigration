@@ -180,9 +180,17 @@ body {
 }
 
 body {
-  background: #ededed;
   color: var(--foreground);
   font-family: var(--font-inter);
   overflow-x: hidden;
+}
+
+body:not(.admin-body) {
+  background: #ededed;
   padding-top: 80px; /* Account for fixed header on all screen sizes */
+}
+
+body.admin-body {
+  background: #f9fafb; /* bg-gray-50 */
+  padding-top: 0 !important;
 }

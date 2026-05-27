@@ -33,9 +33,20 @@ function NewGuideForm() {
 
   const [previewMode, setPreviewMode] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [guideCategories, setGuideCategories] = useState([]);
 
   const supabase = createClient();
   const { showToast } = useToast();
+
+  // Load guide categories
+  useEffect(() => {
+    supabase
+      .from("categories")
+      .select("name")
+      .eq("type", "guide")
+      .order("name")
+      .then(({ data }) => setGuideCategories(data?.map((c) => c.name) || []));
+  }, []);
 
   // Load existing guide if editing
   useEffect(() => {
@@ -261,11 +272,20 @@ function NewGuideForm() {
                   value={formData.category}
                   onChange={handleChange}
                 >
-                  <option>Visas</option>
-                  <option>Education</option>
-                  <option>Policy</option>
-                  <option>Relocation</option>
-                  <option>Checklist</option>
+                  {guideCategories.length > 0 ? (
+                    guideCategories.map((cat) => (
+                      <option key={cat} value={cat}>{cat}</option>
+                    ))
+                  ) : (
+                    /* Fallback while loading or if table is empty */
+                    <>
+                      <option>Visas</option>
+                      <option>Education</option>
+                      <option>Policy</option>
+                      <option>Relocation</option>
+                      <option>Checklist</option>
+                    </>
+                  )}
                 </select>
               </div>
               <div>
@@ -312,6 +332,67 @@ function NewGuideForm() {
                   value={formData.fileUrl}
                   onChange={handleChange}
                 />
+
+                <div className="flex items-center gap-2 text-[10px] text-gray-400 font-bold uppercase my-3">
+                  <span className="h-[1px] flex-grow bg-gray-100"></span>
+                  <span>OR</span>
+                  <span className="h-[1px] flex-grow bg-gray-100"></span>
+                </div>
+
+                <div className="relative group">
+                  <input
+                    type="file"
+                    accept="application/pdf"
+                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                    onChange={(e) => {
+                      const file = e.target.files[0];
+                      if (file) {
+                        if (file.size > 500 * 1024) {
+                          showToast("PDF size too large! Max 500KB.", "warning");
+                          e.target.value = "";
+                          return;
+                        }
+                        const reader = new FileReader();
+                        reader.onloadend = () => {
+                          let sizeStr = "";
+                          if (file.size < 1024) sizeStr = `${file.size} B`;
+                          else if (file.size < 1024 * 1024) sizeStr = `${(file.size / 1024).toFixed(1)}KB`;
+                          else sizeStr = `${(file.size / (1024 * 1024)).toFixed(1)}MB`;
+
+                          setFormData((prev) => ({ 
+                            ...prev, 
+                            fileUrl: reader.result,
+                            fileSize: sizeStr
+                          }));
+                          showToast("PDF uploaded successfully!", "success");
+                        };
+                        reader.readAsDataURL(file);
+                      }
+                    }}
+                  />
+                  <div className="border-2 border-dashed border-gray-200 group-hover:border-yellow-500 rounded-xl p-4 text-center transition-all">
+                    <div className="text-gray-400 group-hover:text-yellow-600 transition-colors">
+                      <FaFilePdf size={24} className="mx-auto mb-2" />
+                      <p className="text-xs font-bold uppercase tracking-wider">Upload PDF File</p>
+                      <p className="text-[10px] text-gray-400 mt-1">Max 500KB</p>
+                    </div>
+                  </div>
+                </div>
+
+                {formData.fileUrl && formData.fileUrl.startsWith("data:") && (
+                  <div className="mt-3 flex items-center justify-between p-3 bg-green-50 rounded-xl border border-green-100">
+                    <span className="text-xs text-green-700 font-medium truncate max-w-[180px]">
+                      PDF Uploaded ({formData.fileSize})
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => setFormData((prev) => ({ ...prev, fileUrl: "", fileSize: "" }))}
+                      className="text-xs text-red-500 hover:text-red-700 font-bold underline"
+                    >
+                      Clear
+                    </button>
+                  </div>
+                )}
               </div>
 
               <div className="grid grid-cols-2 gap-3">
