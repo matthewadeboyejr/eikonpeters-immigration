@@ -146,15 +146,17 @@ const Nav = () => {
           <div className="flex justify-between items-center h-20 w-full">
             {/* Logo */}
             <div className="flex-shrink-0">
-              <Image
-                className="w-24 md:w-36 h-auto"
-                src="/images/Eikon-Peter-Social-Media.svg"
-                alt="Logo"
-                width={200}
-                height={200}
-                priority
-                unoptimized
-              />
+              <a href="/">
+                <Image
+                  className="w-24 md:w-36 h-auto cursor-pointer"
+                  src="/images/Eikon-Peter-Social-Media.svg"
+                  alt="Logo"
+                  width={200}
+                  height={200}
+                  priority
+                  unoptimized
+                />
+              </a>
             </div>
 
             {/* Desktop Navigation */}
