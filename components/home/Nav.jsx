@@ -164,6 +164,12 @@ const Nav = () => {
                   <div className="flex items-center">
                     <a
                       href={item.path}
+                      onClick={(e) => {
+                        if (item.path === "#" || !item.path) {
+                          e.preventDefault();
+                          toggleDropdown(index);
+                        }
+                      }}
                       className="px-4 py-2 font-medium text-gray-800 hover:text-yellow-600 transition-colors"
                     >
                       {item.name}
@@ -254,6 +260,12 @@ const Nav = () => {
                     <div className="flex justify-between items-center py-3">
                       <a
                         href={item.path}
+                        onClick={(e) => {
+                          if (item.path === "#" || !item.path) {
+                            e.preventDefault();
+                            toggleDropdown(index);
+                          }
+                        }}
                         className="font-medium text-gray-800 hover:text-yellow-600 transition-colors"
                       >
                         {item.name}
