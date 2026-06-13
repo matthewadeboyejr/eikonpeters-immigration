@@ -6,7 +6,6 @@ import { RiGlobalLine } from "react-icons/ri";
 import { useState, useRef } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
-import emailjs from "@emailjs/browser";
 import { fadeInUp } from "../animation/animation";
 
 const ContactUs = () => {
@@ -52,11 +51,6 @@ const ContactUs = () => {
     setShowCalendar(false);
   };
 
-  const serviceID = "service_1zxv8it";
-  const businessTemplateID = "template_ztc8eet";
-  const publicKey = "7kXv19UEGTBacAU-h";
-  const clientTemplateID = "template_4lpxnzg";
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -72,6 +66,7 @@ const ContactUs = () => {
     const formData = {
       name: e.target.name.value,
       email: e.target.email.value,
+      phone: e.target.phone.value,
       service: e.target.service.value,
       date: formattedDate,
       time: selectedTime,
@@ -81,8 +76,17 @@ const ContactUs = () => {
     };
 
     try {
-      await emailjs.send(serviceID, businessTemplateID, formData, publicKey);
-      await emailjs.send(serviceID, clientTemplateID, formData, publicKey);
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to submit form to Brevo");
+      }
 
       setSubmitStatus("success");
       formRef.current.reset();
@@ -174,24 +178,40 @@ const ContactUs = () => {
                 </div>
               </div>
 
-              {/* Service Selection */}
-              <div>
-                <label htmlFor="service" className="block text-gray-700 mb-2">
-                  Service Needed
-                </label>
-                <select
-                  id="service"
-                  name="service"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
-                >
-                  <option value="">Select a service</option>
-                  <option value="self-sponsorship">Self Sponsorship</option>
-                  <option value="family-visa">Family Visa</option>
-                  <option value="student-visa">Student Visa</option>
-                  <option value="work-visa">Work Visa</option>
-                  <option value="business-visa">Business Visa</option>
-                  <option value="tourist-visa">Tourist Visa</option>
-                </select>
+              {/* Phone and Service Needed */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label htmlFor="phone" className="block text-gray-700 mb-2">
+                    Phone Number
+                  </label>
+                  <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+                    placeholder="+1 (555) 123-4567"
+                    required
+                  />
+                </div>
+                <div>
+                  <label htmlFor="service" className="block text-gray-700 mb-2">
+                    Service Needed
+                  </label>
+                  <select
+                    id="service"
+                    name="service"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+                    required
+                  >
+                    <option value="">Select a service</option>
+                    <option value="self-sponsorship">Self Sponsorship</option>
+                    <option value="family-visa">Family Visa</option>
+                    <option value="student-visa">Student Visa</option>
+                    <option value="work-visa">Work Visa</option>
+                    <option value="business-visa">Business Visa</option>
+                    <option value="tourist-visa">Tourist Visa</option>
+                  </select>
+                </div>
               </div>
 
               {/* Calendar Section */}
