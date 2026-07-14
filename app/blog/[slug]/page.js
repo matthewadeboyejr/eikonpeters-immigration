@@ -4,6 +4,7 @@ import Link from "next/link";
 import { FaCalendarAlt, FaUser, FaChevronLeft, FaTag, FaTwitter, FaFacebookF, FaLinkedinIn } from "react-icons/fa";
 import { createClient } from "@/utils/supabase/server";
 import { createClient as createSimpleClient } from "@supabase/supabase-js";
+import NewsletterSubscribe from "@/components/blog/NewsletterSubscribe";
 
 export async function generateStaticParams() {
   try {
@@ -241,20 +242,7 @@ export default async function BlogPostPage({ params }) {
             </div>
             
             {/* Newsletter Subscription (Inline) */}
-            <div className="mt-20 p-8 md:p-12 bg-gray-50 rounded-[2rem] text-center">
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">Get immigration updates</h3>
-              <p className="text-gray-600 mb-8 max-w-md mx-auto text-sm">Join 5,000+ others who receive our weekly newsletter on latest visa policies and success stories.</p>
-              <form className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-                <input 
-                  type="email" 
-                  placeholder="your@email.com" 
-                  className="flex-grow px-6 py-3 rounded-xl border border-gray-200 focus:border-yellow-500 focus:ring-2 focus:ring-yellow-100 outline-none transition-all text-sm"
-                />
-                <button className="bg-yellow-500 hover:bg-yellow-600 text-white font-bold px-6 py-3 rounded-xl transition-all shadow-lg shadow-yellow-200 text-sm">
-                  Subscribe
-                </button>
-              </form>
-            </div>
+            <NewsletterSubscribe />
           </div>
         </div>
       </div>
