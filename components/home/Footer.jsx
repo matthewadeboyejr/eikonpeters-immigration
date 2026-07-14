@@ -51,6 +51,9 @@ const Footer = () => {
             <li>
               <a href="/contact" className="hover:text-yellow-500 transition-colors">Contact</a>
             </li>
+            <li>
+              <a href="/privacy" className="hover:text-yellow-500 transition-colors">Privacy Policy</a>
+            </li>
           </ul>
         </div>
 

@@ -8,7 +8,8 @@ export default async function sitemap() {
     "/contact",
     "/services",
     "/blog",
-    "/guides"
+    "/guides",
+    "/privacy"
   ];
 
   const staticMaps = routes.map((route) => ({
