@@ -164,19 +164,39 @@ export default async function BlogPostPage({ params }) {
               <div>
                 <p className="text-[10px] uppercase tracking-widest text-gray-400 font-bold mb-4">Share this post</p>
                 <div className="flex flex-wrap gap-3">
-                  {[
-                    { name: "Twitter", icon: FaTwitter },
-                    { name: "Facebook", icon: FaFacebookF },
-                    { name: "LinkedIn", icon: FaLinkedinIn },
-                  ].map((platform) => (
-                    <button 
-                      key={platform.name}
-                      className="w-10 h-10 rounded-full border border-gray-100 flex items-center justify-center text-gray-500 hover:bg-yellow-500 hover:border-yellow-500 hover:text-white transition-all"
-                      title={`Share on ${platform.name}`}
-                    >
-                      <platform.icon size={16} />
-                    </button>
-                  ))}
+                  {(() => {
+                    const shareUrl = `https://www.eikonpetersimmigration.com/blog/${post.slug}`;
+                    const shareTitle = post.title;
+                    
+                    return [
+                      { 
+                        name: "Twitter", 
+                        icon: FaTwitter,
+                        href: `https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareTitle)}`
+                      },
+                      { 
+                        name: "Facebook", 
+                        icon: FaFacebookF,
+                        href: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`
+                      },
+                      { 
+                        name: "LinkedIn", 
+                        icon: FaLinkedinIn,
+                        href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`
+                      },
+                    ].map((platform) => (
+                      <a 
+                        key={platform.name}
+                        href={platform.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-10 h-10 rounded-full border border-gray-100 flex items-center justify-center text-gray-500 hover:bg-yellow-500 hover:border-yellow-500 hover:text-white transition-all"
+                        title={`Share on ${platform.name}`}
+                      >
+                        <platform.icon size={16} />
+                      </a>
+                    ));
+                  })()}
                 </div>
               </div>
 
