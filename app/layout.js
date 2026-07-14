@@ -42,6 +42,23 @@ export default function RootLayout({ children }) {
       <head>
         <link href="https://js.appointlet.com/styles.css" rel="stylesheet" />
         <Script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-4D7593R0CY"
+          strategy="afterInteractive"
+        />
+        <Script
+          id="google-analytics"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-4D7593R0CY');
+            `,
+          }}
+        />
+        <Script
           id="gtm-script"
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{
