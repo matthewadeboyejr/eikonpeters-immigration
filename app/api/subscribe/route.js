@@ -71,49 +71,70 @@ export async function POST(request) {
             <!DOCTYPE html>
             <html>
             <head>
-              <style>
-                body { font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 20px; }
-                .container { max-width: 600px; margin: 0 auto; border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden; }
-                .header { background: #1e3a8a; color: white; padding: 32px 24px; text-align: center; }
-                .header h1 { margin: 0; font-size: 24px; font-weight: 800; }
-                .content { padding: 32px 24px; }
-                .welcome-banner { background: #fdfaf2; border-left: 4px solid #eab308; padding: 16px; margin: 20px 0; border-radius: 4px; }
-                .welcome-banner p { margin: 0; font-weight: 600; color: #854d0e; }
-                .button { display: inline-block; background: #eab308; color: white; text-decoration: none; padding: 12px 24px; font-weight: bold; border-radius: 8px; margin-top: 20px; }
-                .button:hover { background: #ca8a04; }
-                .footer { text-align: center; padding: 24px; font-size: 12px; color: #6b7280; border-top: 1px solid #f3f4f6; background: #f9fafb; }
-              </style>
+              <meta charset="utf-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>Welcome to Eikon Peters Immigration</title>
             </head>
-            <body>
-              <div class="container">
-                <div class="header">
-                  <h1>Eikon Peters Immigration</h1>
+            <body style="margin: 0; padding: 20px; background-color: #f1f5f9; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+              <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05); border: 1px solid #e2e8f0;">
+                <!-- Gold Header Stripe -->
+                <div style="height: 6px; background-color: #eab308;"></div>
+                
+                <!-- Brand Header -->
+                <div style="padding: 28px 24px; text-align: center; border-bottom: 1px solid #f1f5f9;">
+                  <span style="font-size: 20px; font-weight: 800; color: #1e3a8a; letter-spacing: 2px; text-transform: uppercase;">
+                    EIKON PETERS
+                  </span>
+                  <div style="font-size: 9px; font-weight: 600; color: #ca8a04; letter-spacing: 3px; margin-top: 4px; text-transform: uppercase;">
+                    Immigration Services
+                  </div>
                 </div>
-                <div class="content">
-                  <h2>Thank you for subscribing!</h2>
-                  <p>Dear Reader,</p>
-                  <p>We are thrilled to welcome you to our weekly newsletter community. You will now be among the first to receive updates on key immigration policy shifts, visa guidelines, success stories, and strategic visa pathways.</p>
+
+                <!-- Banner -->
+                <div style="background-color: #f8fafc; padding: 24px; text-align: center; border-bottom: 1px solid #e2e8f0;">
+                  <h2 style="margin: 0; font-size: 16px; font-weight: 700; color: #0f172a; text-transform: uppercase; letter-spacing: 0.5px;">
+                    Thank you for subscribing!
+                  </h2>
+                </div>
+
+                <!-- Content Area -->
+                <div style="padding: 36px 32px 32px 32px; color: #334155; font-size: 15px; line-height: 1.7;">
+                  <p style="margin: 0 0 20px 0; font-size: 15px; font-weight: 700; color: #0f172a;">Dear Reader,</p>
+                  <p style="margin: 0 0 20px 0; color: #475569;">We are thrilled to welcome you to our weekly newsletter community. You will now be among the first to receive updates on key immigration policy shifts, visa guidelines, success stories, and strategic visa pathways.</p>
                   
-                  <div class="welcome-banner">
-                    <p>💡 What to expect:</p>
-                    <ul style="margin: 8px 0 0 20px; padding: 0; color: #854d0e;">
-                      <li>Updates on global talent, work, and student visas.</li>
-                      <li>Immigration policy breakdowns.</li>
-                      <li>Expert guides and templates.</li>
+                  <div style="background-color: #fffbeb; border-left: 4px solid #eab308; padding: 20px; margin: 24px 0; border-radius: 8px; color: #854d0e; font-size: 14px; line-height: 1.6;">
+                    <strong style="display: block; margin-bottom: 8px; font-size: 15px;">💡 What to expect:</strong>
+                    <ul style="margin: 0; padding-left: 20px;">
+                      <li style="margin-bottom: 4px;">Updates on global talent, work, and student visas.</li>
+                      <li style="margin-bottom: 4px;">Immigration policy changes &amp; advisory warnings.</li>
+                      <li>Expert guides and pathway templates.</li>
                     </ul>
                   </div>
                   
-                  <p>In the meantime, feel free to visit our guides section to browse and download our detailed immigration manuals.</p>
+                  <p style="margin: 0 0 20px 0; color: #475569;">In the meantime, feel free to visit our guides section to browse and download our detailed immigration manuals.</p>
                   
-                  <div style="text-align: center;">
-                    <a href="https://www.eikonpetersimmigration.com/guides" class="button">Explore Guides</a>
+                  <!-- Call to action button -->
+                  <div style="text-align: center; margin-top: 32px; margin-bottom: 8px;">
+                    <a href="https://www.eikonpetersimmigration.com/guides" style="display: inline-block; background-color: #eab308; color: #ffffff; text-decoration: none; padding: 12px 28px; font-weight: bold; border-radius: 8px; font-size: 14px; box-shadow: 0 4px 6px -1px rgba(234, 179, 8, 0.2); transition: all 0.2s;">
+                      Explore Guides
+                    </a>
                   </div>
-                  
-                  <p style="margin-top: 30px;">Best regards,<br><strong>The Eikon Peters Team</strong></p>
+
+                  <!-- Signature -->
+                  <div style="margin-top: 36px; padding-top: 24px; border-top: 1px solid #f1f5f9;">
+                    <p style="margin: 0; font-size: 14px; color: #475569; font-weight: 600;">Best regards,</p>
+                    <p style="margin: 4px 0 0 0; font-size: 14px; color: #0f172a; font-weight: 800;">The Eikon Peters Team</p>
+                    <p style="margin: 2px 0 0 0; font-size: 11px; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px;">UK Regulated Advisors</p>
+                  </div>
                 </div>
-                <div class="footer">
-                  <p>&copy; ${new Date().getFullYear()} Eikon Peters Immigration Services. All rights reserved.</p>
-                  <p>You received this email because you subscribed to our newsletter. If you wish to unsubscribe, please reply to this email.</p>
+
+                <!-- Footer -->
+                <div style="background-color: #f8fafc; padding: 28px 24px; text-align: center; border-top: 1px solid #e2e8f0; font-size: 11px; color: #64748b; line-height: 1.6;">
+                  <p style="margin: 0 0 8px 0; font-weight: 700; color: #475569; text-transform: uppercase; letter-spacing: 0.5px;">Eikon Peters Immigration Services Ltd</p>
+                  <p style="margin: 0 0 16px 0; color: #94a3b8;">Regulated by the Immigration Advice Authority (IAA) to provide Level 1 services.</p>
+                  <div style="margin: 16px 0; border-top: 1px dashed #e2e8f0; height: 1px;"></div>
+                  <p style="margin: 0 0 4px 0;">&copy; ${new Date().getFullYear()} Eikon Peters. All rights reserved.</p>
+                  <p style="margin: 0; color: #94a3b8;">You received this email because you subscribed to our newsletter. If you wish to unsubscribe, please reply directly to this email.</p>
                 </div>
               </div>
             </body>
