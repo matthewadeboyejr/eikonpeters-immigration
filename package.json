@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@appointlet/appointlet.js": "^3.0.7",
+    "@google-analytics/data": "^6.1.0",
     "@supabase/ssr": "^0.10.3",
     "@supabase/supabase-js": "^2.106.1",
     "@tailwindcss/typography": "^0.5.19",

@@ -46,7 +46,7 @@ const CustomPieTooltip = ({ active, payload }) => {
       <div className="bg-white border border-gray-200 rounded-xl shadow-lg px-4 py-3">
         <p className="text-sm font-bold text-gray-800">{payload[0].name}</p>
         <p className="text-lg font-black" style={{ color: payload[0].payload.fill }}>
-          {payload[0].value} leads
+          {payload[0].value}
         </p>
       </div>
     );
@@ -143,5 +143,73 @@ export function LeadsByStatusChart({ data }) {
       </Pie>
       <Tooltip content={<CustomPieTooltip />} />
     </PieChart>
+  );
+}
+
+export function TrafficAreaChart({ data }) {
+  return (
+    <ResponsiveContainer width="100%" height={260}>
+      <AreaChart data={data} margin={{ top: 10, right: 10, bottom: 0, left: -20 }}>
+        <defs>
+          <linearGradient id="viewsGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="5%"  stopColor={COLOURS.primary} stopOpacity={0.25} />
+            <stop offset="95%" stopColor={COLOURS.primary} stopOpacity={0} />
+          </linearGradient>
+          <linearGradient id="usersGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="5%"  stopColor={COLOURS.blue} stopOpacity={0.2} />
+            <stop offset="95%" stopColor={COLOURS.blue} stopOpacity={0} />
+          </linearGradient>
+        </defs>
+        <CartesianGrid strokeDasharray="3 3" stroke="#F3F4F6" />
+        <XAxis dataKey="label" tick={{ fontSize: 10, fill: "#9CA3AF" }} tickLine={false} axisLine={false} />
+        <YAxis tick={{ fontSize: 10, fill: "#9CA3AF" }} tickLine={false} axisLine={false} allowDecimals={false} />
+        <Tooltip content={<CustomTooltip />} />
+        <Area
+          type="monotone"
+          dataKey="views"
+          name="Page Views"
+          stroke={COLOURS.primary}
+          strokeWidth={2.5}
+          fill="url(#viewsGrad)"
+          dot={{ r: 3, fill: COLOURS.primary, strokeWidth: 0 }}
+          activeDot={{ r: 5, fill: COLOURS.primary }}
+        />
+        <Area
+          type="monotone"
+          dataKey="users"
+          name="Active Users"
+          stroke={COLOURS.blue}
+          strokeWidth={2}
+          fill="url(#usersGrad)"
+          dot={{ r: 3, fill: COLOURS.blue, strokeWidth: 0 }}
+          activeDot={{ r: 5, fill: COLOURS.blue }}
+        />
+      </AreaChart>
+    </ResponsiveContainer>
+  );
+}
+
+export function DevicesPieChart({ data }) {
+  return (
+    <ResponsiveContainer width="100%" height={180}>
+      <PieChart>
+        <Pie
+          data={data}
+          dataKey="count"
+          nameKey="name"
+          cx="50%"
+          cy="50%"
+          innerRadius={45}
+          outerRadius={70}
+          paddingAngle={3}
+          strokeWidth={0}
+        >
+          {data.map((entry, index) => (
+            <Cell key={`cell-${index}`} fill={PIE_COLOURS[index % PIE_COLOURS.length]} />
+          ))}
+        </Pie>
+        <Tooltip content={<CustomPieTooltip />} />
+      </PieChart>
+    </ResponsiveContainer>
   );
 }
